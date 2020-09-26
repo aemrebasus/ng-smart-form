@@ -1,6 +1,7 @@
 {
   "name": "ng-smart-form",
   "version": "0.0.0",
+  "description": "Angular 10 Material Smart Form Component",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -8,7 +9,6 @@
     "test": "ng test",
     "lint": "ng lint"
   },
-  "private": true,
   "dependencies": {
     "@angular/animations": "~10.1.0-rc.0",
     "@angular/common": "~10.1.0-rc.0",
