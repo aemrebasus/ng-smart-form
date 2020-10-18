@@ -8,6 +8,7 @@ import { AeSideNavModule } from 'ae-material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { AeDynamicFormModule } from 'projects/ae-dynamic-form/src/public-api';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { environment } from '../environments/environment';
     BrowserModule,
     AppRoutingModule,
     AeSideNavModule,
+    AeDynamicFormModule,
     BrowserAnimationsModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
