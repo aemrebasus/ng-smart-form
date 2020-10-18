@@ -1,9 +1,15 @@
 <form [formGroup]="formGroup">
-    <div>
+    <div *ngFor='let formInput of input.formInputs'>
+
+        <!-- text input -->
         <mat-form-field>
-            <input matInput placeholder="label" value="value">
-            <mat-icon matSuffix>{{icon}}</mat-icon>
+            <input matInput [formControlName]="formInput.name" [placeholder]="formInput.placeholder"
+                [value]="formInput.state" [autocomplete]="formInput.autocomplete">
+            <mat-icon matSuffix>{{formInput.icon}}</mat-icon>
         </mat-form-field>
+
+
+
+
     </div>
-    <button mat-raised-button (click)="submit()">{{submitButton.value}}</button>
 </form>

@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "tslib": "^2.0.0",
-    "ng-icon-type": "1.0.0"
+    "ng-icon-type": "1.0.0",
+    "validator": "13.1.17"
   }
 }

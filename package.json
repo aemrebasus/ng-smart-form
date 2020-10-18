@@ -22,6 +22,7 @@
     "@angular/platform-browser-dynamic": "~10.1.3",
     "@angular/router": "~10.1.3",
     "@angular/service-worker": "~10.1.3",
+    "address-type": "^1.0.0",
     "ae-material": "^1.4.1",
     "form-input-type": "^1.0.0",
     "ng-icon-type": "^1.0.0",

@@ -1,36 +1,27 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { IconType } from 'ng-icon-type';
-import { ExtendedFormControl } from './ExtendedFormControl';
-
-
-export interface AeDynamicForm {
-  formTitle?: string;
-  formGroup: FormGroup;
-  formInputs: ExtendedFormControl[];
-  submitButton: { value: string, color: 'accent' | 'warn' | 'primary' };
-
-}
+import { AeDynamicForm } from './ae-dynamic-form.class';
 
 
 @Component({
   selector: 'ae-dynamic-form',
-  templateUrl: './ae-dynamic-form.component.html'
+  templateUrl: './ae-dynamic-form.component.html',
+  styleUrls: ['./ae-dynamic-form.component.scss']
 })
 export class AeDynamicFormComponent implements OnInit {
-
   protected formGroup: FormGroup;
 
-  @Input() formTitle: string;
-  @Input() formInputs: ExtendedFormControl[] = [
-    new ExtendedFormControl('firstName', 'text', '', [], '4k')
-  ];
-  @Input() submitButton: { value: string, color: 'accent' | 'warn' | 'primary' } = {
-    value: 'Submit',
-    color: 'accent'
+  @Input() input: AeDynamicForm = {
+    formTitle: 'Test Form',
+    submitButton: {
+      value: 'Label',
+      color: 'accent',
+    },
+    formInputs: [
+      { name: 'firstName', placeholder: 'First Name' },
+      { name: 'lastName', placeholder: 'Last Name', }
+    ]
   };
-
-  @Input() icon: IconType = '360';
 
   ngOnInit(): void {
     this.initFormGroup();
@@ -38,14 +29,17 @@ export class AeDynamicFormComponent implements OnInit {
 
   initFormGroup(): void {
     const object = {};
-    this.formInputs.forEach(i => object[i.name] = i.control);
+    this.input.formInputs.forEach(i => object[i.name] = new FormControl(i.state, i.validators));
     this.formGroup = new FormGroup(object);
   }
 
 
+  reset(): void {
+    this.formGroup.reset();
+  }
 
   submit(): void {
-
+    console.log(this.formGroup.value);
   }
 
 }
