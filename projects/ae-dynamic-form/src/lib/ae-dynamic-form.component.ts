@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'lib-ng-smart-form',
+  selector: 'ae-dynamic-form',
   template: `
     <p>
-      ng-smart-form works!
+      ae-dynamic-form works!
     </p>
   `,
   styles: [
   ]
 })
-export class NgSmartFormComponent implements OnInit {
+export class AeDynamicFormComponent implements OnInit {
 
   constructor() { }
 

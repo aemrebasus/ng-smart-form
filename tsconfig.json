@@ -16,9 +16,9 @@
       "dom"
     ],
     "paths": {
-      "ng-smart-form": [
-        "dist/ng-smart-form/ng-smart-form",
-        "dist/ng-smart-form"
+      "ae-dynamic-form": [
+        "dist/ae-dynamic-form/ae-dynamic-form",
+        "dist/ae-dynamic-form"
       ]
     }
   }

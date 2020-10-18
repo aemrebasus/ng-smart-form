@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { NgSmartFormService } from './ng-smart-form.service';
+import { AeDynamicFormService } from './ae-dynamic-form.service';
 
-describe('NgSmartFormService', () => {
-  let service: NgSmartFormService;
+describe('AeDynamicFormService', () => {
+  let service: AeDynamicFormService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(NgSmartFormService);
+    service = TestBed.inject(AeDynamicFormService);
   });
 
   it('should be created', () => {
