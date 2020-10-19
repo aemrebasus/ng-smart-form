@@ -3,5 +3,12 @@
   "dest": "../../dist/ae-dynamic-form",
   "lib": {
     "entryFile": "src/public-api.ts"
-  }
+  },
+  "whitelistedNonPeerDependencies": [
+    "tslib",
+    "ng-icon-type",
+    "address-type",
+    "form-input-type",
+    "validator"
+  ]
 }

@@ -1,13 +1,13 @@
 {
   "name": "ae-dynamic-form",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "peerDependencies": {
     "@angular/common": "^10.1.6",
     "@angular/core": "^10.1.6"
   },
   "dependencies": {
     "tslib": "^2.0.0",
-    "ng-icon-type": "1.0.0",
+    "ng-icon-type": "^1.0.0",
     "address-type": "^1.0.0",
     "form-input-type": "^1.0.0",
     "validator": "13.1.17"

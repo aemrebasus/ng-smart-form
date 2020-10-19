@@ -26,7 +26,7 @@
     "address-type": "^1.0.0",
     "ae-material": "^1.4.1",
     "form-input-type": "^1.0.0",
-    "ng-icon-type": "^1.0.0",
+    "ng-icon-type": "^1.0.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "validator": "^13.1.17",
