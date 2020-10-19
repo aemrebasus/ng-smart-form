@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { AeDynamicForm } from './ae-dynamic-form.class';
+import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
+import { AeDynamicForm, AeDynamicFormBuilder } from './ae-dynamic-form.class';
+import { aeValidators } from './builtin-validators';
 
 
 @Component({
@@ -9,19 +10,24 @@ import { AeDynamicForm } from './ae-dynamic-form.class';
   styleUrls: ['./ae-dynamic-form.component.scss']
 })
 export class AeDynamicFormComponent implements OnInit {
-  protected formGroup: FormGroup;
 
-  @Input() input: AeDynamicForm = {
-    formTitle: 'Test Form',
-    submitButton: {
-      value: 'Label',
-      color: 'accent',
-    },
-    formInputs: [
-      { name: 'firstName', placeholder: 'First Name' },
-      { name: 'lastName', placeholder: 'Last Name', }
-    ]
-  };
+  protected formGroup: FormGroup;
+  @Input() input: AeDynamicForm = new AeDynamicFormBuilder()
+    .newForm('Form Title')
+      .newControl('firstName')
+        .placeholder('Type First Name')
+        .icon('360')
+        .label('First Name')
+        .required()
+        .max(10)
+        .min(3)
+        .buildFormControl()
+      .newControl('lastName')
+        .placeholder('Type Last Name')
+        .icon('perm_camera_mic')
+        .label('Last Name')
+        .buildFormControl()
+    .buildForm();
 
   ngOnInit(): void {
     this.initFormGroup();
@@ -33,6 +39,22 @@ export class AeDynamicFormComponent implements OnInit {
     this.formGroup = new FormGroup(object);
   }
 
+  private getFormControlByName(controlName: string): AbstractControl {
+    return this.formGroup.controls[controlName];
+  }
+
+  private getFormControlErrorsByName(controlName: string): { [key: string]: string | null } {
+    return this.getFormControlByName(controlName).errors;
+  }
+
+  public errorMessage(controlName: string): string[] {
+    const errors = this.getFormControlErrorsByName(controlName);
+    if (errors) {
+      return Object.values(errors);
+    } else {
+      return null;
+    }
+  }
 
   reset(): void {
     this.formGroup.reset();

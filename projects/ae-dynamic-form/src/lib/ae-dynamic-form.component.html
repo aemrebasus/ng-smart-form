@@ -1,15 +1,20 @@
 <form [formGroup]="formGroup">
     <div *ngFor='let formInput of input.formInputs'>
-
-        <!-- text input -->
+        <!-- text:color:number:email:password:url input -->
         <mat-form-field>
-            <input matInput [formControlName]="formInput.name" [placeholder]="formInput.placeholder"
-                [value]="formInput.state" [autocomplete]="formInput.autocomplete">
+            <input [type]="formInput.type" matInput [formControlName]="formInput.name"
+                [placeholder]="formInput.placeholder" [value]="formInput.state" [autocomplete]="formInput.autocomplete">
             <mat-icon matSuffix>{{formInput.icon}}</mat-icon>
+            <mat-hint>{{formInput.hint}} </mat-hint>
+            <mat-error style="display: block; position: relative;">
+                {{errorMessage(formInput.name)}}
+            </mat-error>
         </mat-form-field>
 
+    </div>
 
-
-
+    <div *ngIf="input.submitButton">
+        <button mat-raised-button (click)="submit()"
+            [color]="input.submitButton.color">{{input.submitButton.value || 'Submit'}}</button>
     </div>
 </form>
