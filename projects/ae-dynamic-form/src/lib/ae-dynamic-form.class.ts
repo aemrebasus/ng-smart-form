@@ -1,4 +1,4 @@
-import { ValidatorFn } from '@angular/forms';
+import { FormControl, FormGroup, ValidatorFn } from '@angular/forms';
 import { IconType } from 'ng-icon-type';
 import { InputType, InputAutocompleteType } from 'form-input-type';
 import validator from 'validator';
@@ -8,6 +8,8 @@ export interface InputOption {
     label?: string;
     value: string;
     icon?: IconType;
+    checked?: boolean;
+    disabled?: boolean;
 }
 
 export type DateControlType = 'range' | 'basic';
@@ -20,16 +22,24 @@ export type DateControlType = 'range' | 'basic';
 /**
  * @field name: string;
  * @field type?: InputType;
+ * @field dateType?: DateControlType;
+ * @field dateRange?: boolean;
+ * @field startDate?: Date;
  * @field state?: string | number;
- * @field validators?: ValidatorFn | ValidatorFn[];
+ * @field validators?: ValidatorFn[];
  * @field autocomplete?: InputAutocompleteType;
  * @field hint?: string;
  * @field placeholder?: string;
  * @field label?: string;
- * @field options?: string[];
+ * @field options?: InputOption[];
+ * @field range?: { min: number, max: number };
  * @field icon?: IconType;
- * @field dateType?: DateControlType;
- * @field dateRange?: DateConstantRange;
+ * @field disabled?: boolean;
+ * @field classes?: string[];
+ * @field styles?: string;
+ * @field onChange?: (formGroup: FormGroup) => void;
+ * @field onInput?: (formGroup: FormGroup) => void;
+ * @field onActive?: (formGroup: FormGroup) => void;
  */
 export interface AeFormControl {
     name: string;
@@ -37,7 +47,6 @@ export interface AeFormControl {
     dateType?: DateControlType;
     dateRange?: boolean;
     startDate?: Date;
-    // dateConstantRange?: DateConstantRange;
     state?: string | number;
     validators?: ValidatorFn[];
     autocomplete?: InputAutocompleteType;
@@ -47,14 +56,25 @@ export interface AeFormControl {
     options?: InputOption[];
     range?: { min: number, max: number };
     icon?: IconType;
+    disabled?: boolean;
+    classes?: string[];
+    styles?: string;
+    onChange?: (formGroup: FormGroup) => void;
+    onInput?: (formGroup: FormGroup) => void;
+    onActive?: (formGroup: FormGroup) => void;
 }
 
 
+type SubmitButtonType = {
+    value: string,
+    color: 'accent' | 'warn' | 'primary',
+    action?: (value: { [key: string]: string }) => void
+};
 
 export interface AeDynamicForm {
     formTitle?: string;
     formInputs: AeFormControl[];
-    submitButton?: { value: string, color: 'accent' | 'warn' | 'primary', action?: (value: { [key: string]: string }) => void };
+    submitButton?: SubmitButtonType;
 
 }
 
@@ -110,13 +130,10 @@ export class AeFormBuilder {
      *
      * ```
      */
-    constructor() { }
+    constructor() {
 
 
-
-
-
-
+    }
 
 
 
@@ -131,36 +148,27 @@ export class AeFormBuilder {
     };
 
     /**
-     * @description  FormControl holder to store each formControl before adding it to the formInputs in the dynamicForm.
+     * @description  FormControl holder to kepp each formControl until adding it to the formInputs in the dynamicForm.
      */
     private newFormControlHolder: AeFormControl;
 
-    /**
-     * @description set the title of the form.
-     */
     public title(title?: string): AeFormBuilder {
         this.dynamicForm.formTitle = title;
         return this;
     }
 
-    /**
-     * @description set the value of submit button.
-     */
     public submitButtonLabel(value: string): AeFormBuilder {
         this.dynamicForm.submitButton.value = value;
         return this;
     }
 
-    /**
-     * @description set the color of submit button.
-     */
     public submitButtonColor(value: 'accent' | 'primary' | 'warn'): AeFormBuilder {
         this.dynamicForm.submitButton.color = value;
         return this;
     }
 
     /**
-     * @description set the name of the current controller.
+     * @description Initialize the new form controller and set the name of it.
      */
     public newControl(name: string): AeFormBuilder {
         this.newFormControlHolder = { name, validators: [() => null], options: [] };
@@ -168,7 +176,7 @@ export class AeFormBuilder {
     }
 
     /**
-     * @description set the state of the controller.
+     * @description set the initial value/state of the input field.
      */
     public state(state: string): AeFormBuilder {
         this.newFormControlHolder = { ...this.newFormControlHolder, state };
@@ -176,7 +184,7 @@ export class AeFormBuilder {
     }
 
     /**
-     * @description set the type of the controller.
+     * @description set the type of the controlle like text , date, password, email, range, select etc.
      */
     public type(type: InputType): AeFormBuilder {
         this.newFormControlHolder = { ...this.newFormControlHolder, type };
@@ -184,7 +192,7 @@ export class AeFormBuilder {
     }
 
     /**
-     * @description set the autocomplete of the input element.
+     * @description set the native autocomplete property of the input element.
      */
     public autocomplete(autocomplete: InputAutocompleteType): AeFormBuilder {
         this.newFormControlHolder = { ...this.newFormControlHolder, autocomplete };
@@ -192,14 +200,14 @@ export class AeFormBuilder {
     }
 
     /**
-     * @description set the placeholder of the input element.
+     * @description set the native placeholder of the input element.
      */
     public placeholder(placeholder: string): AeFormBuilder {
         this.newFormControlHolder = { ...this.newFormControlHolder, placeholder };
         return this;
     }
     /**
-     * @description set the hint element value.
+     * @description set hint to explain the input value.
      */
     public hint(hint: string): AeFormBuilder {
         this.newFormControlHolder = { ...this.newFormControlHolder, hint };
@@ -207,7 +215,7 @@ export class AeFormBuilder {
     }
 
     /**
-     * @description set the value of lavel element.
+     * @description set value of the input label
      */
     public label(label: string): AeFormBuilder {
         this.newFormControlHolder = { ...this.newFormControlHolder, label };
@@ -215,7 +223,7 @@ export class AeFormBuilder {
     }
 
     /**
-     * @param options of select input
+     * @param set options for radio inputs, checkbox inputs, and select inputs
      */
     public options(options: InputOption[]): AeFormBuilder {
         this.newFormControlHolder = { ...this.newFormControlHolder, options };
@@ -223,7 +231,7 @@ export class AeFormBuilder {
     }
 
     /**
-     * @param range of the range input.
+     * @description set the min and max values of range input element.
      */
     public range(range: { min: number, max: number }): AeFormBuilder {
         this.newFormControlHolder = { ...this.newFormControlHolder, range };
@@ -240,6 +248,7 @@ export class AeFormBuilder {
 
 
     /**
+     * @description add a custom validator for the input element.
      * @param validator$ ValidatorFn.
      */
     public addValidator(validator$: ValidatorFn): AeFormBuilder {
@@ -251,7 +260,7 @@ export class AeFormBuilder {
     }
 
     /**
-     * @description set the field required.
+     * @description set the input required.
      */
     public required(): AeFormBuilder {
         this.addValidator((control) => {
@@ -344,6 +353,49 @@ export class AeFormBuilder {
         return this;
     }
 
+    /**
+     * @description set listener for chagne event
+     * @param onInput handler function for change event of the input field.
+     */
+    public onInput(onInput: (formGroup: FormGroup) => void): AeFormBuilder {
+        this.newFormControlHolder.onInput = onInput;
+        return this;
+    }
+
+
+    /**
+     * @description set listener for chagne event
+     * @param change handler function for change event of the input field.
+     */
+    public onChange(onChange: (formGroup: FormGroup) => void): AeFormBuilder {
+        this.newFormControlHolder.onChange = onChange;
+        return this;
+    }
+
+    /**
+     * @description set the style of the input field.
+     */
+    public styles(styles: string): AeFormBuilder {
+        this.newFormControlHolder.styles = styles;
+        return this;
+    }
+
+    /**
+     * @description set the class for the inpuput field
+     * @param classes CSS class
+     */
+    public classes(classes: string[]): AeFormBuilder {
+        this.newFormControlHolder.classes = classes;
+        return this;
+    }
+
+    /**
+     * @description set the field disabled.
+     */
+    public disabled(disabled: boolean): AeFormBuilder {
+        this.newFormControlHolder.disabled = disabled;
+        return this;
+    }
 
 
     /**
@@ -362,8 +414,6 @@ export class AeFormBuilder {
     public buildForm(): AeDynamicForm {
         return this.dynamicForm;
     }
-
-
 
 
     // public dateRange(range: boolean): AeFormBuilder {

@@ -72,6 +72,15 @@ export class AeDynamicFormComponent implements OnInit {
     .buildFormControl()
 
 
+    .newControl('Topings')
+    .type('checkbox')
+    .options([
+      { label: 'apple 1', value: 'Apple 1' },
+      { label: 'apple 2', value: 'Apple 2' },
+      { label: 'apple 3', value: 'Apple 3' },
+    ])
+    .buildFormControl()
+
     .buildForm();
 
   ngOnInit(): void {
