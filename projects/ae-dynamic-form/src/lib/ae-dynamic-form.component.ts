@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
-import { AeDynamicForm, AeDynamicFormBuilder } from './ae-dynamic-form.class';
+import { AeDynamicForm, AeFormBuilder } from './ae-dynamic-form.class';
 import { aeValidators } from './builtin-validators';
 
 
@@ -12,8 +12,8 @@ import { aeValidators } from './builtin-validators';
 export class AeDynamicFormComponent implements OnInit {
 
   protected formGroup: FormGroup;
-  @Input() input: AeDynamicForm = new AeDynamicFormBuilder()
-    .newForm('Form Title')
+  @Input() input: AeDynamicForm = new AeFormBuilder()
+    .title('Form Title')
       .newControl('firstName')
         .placeholder('Type First Name')
         .icon('360')

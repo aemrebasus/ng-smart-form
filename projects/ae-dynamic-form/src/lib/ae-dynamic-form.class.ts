@@ -1,4 +1,4 @@
-import { ValidationErrors, ValidatorFn, } from '@angular/forms';
+import { FormBuilder, ValidationErrors, ValidatorFn, } from '@angular/forms';
 import { IconType } from 'ng-icon-type';
 import { InputType, InputAutocompleteType } from 'form-input-type';
 
@@ -9,100 +9,165 @@ export interface AeDynamicForm {
     submitButton?: { value: string, color: 'accent' | 'warn' | 'primary' };
 }
 
-export class AeDynamicFormBuilder {
 
-    private dynamicForm: AeDynamicForm;
+/**
+ * @description Build forms using builder methods.
+ */
+export class AeFormBuilder {
 
+    /**
+     * @description AeDynamicForm instance.
+     */
+    private dynamicForm: AeDynamicForm = {
+        formTitle: 'Form Title',
+        submitButton: { value: '', color: 'accent' },
+        formInputs: []
+    };
+
+    /**
+     * @description  FormControl holder to store each formControl before adding it to the formInputs in the dynamicForm.
+     */
     private newFormControlHolder: AeFormControl;
 
-    public newForm(title?: string): AeDynamicFormBuilder {
-        this.dynamicForm = {
-            formTitle: title || 'Form Title',
-            submitButton: { value: '', color: 'accent' },
-            formInputs: []
-        };
+    /**
+     * @description set the title of the form.
+     */
+    public title(title?: string): AeFormBuilder {
+        this.dynamicForm.formTitle = title;
         return this;
     }
 
-    public submitButtonLabel(value: string): AeDynamicFormBuilder {
+    /**
+     * @description set the value of submit button.
+     */
+    public submitButtonLabel(value: string): AeFormBuilder {
         this.dynamicForm.submitButton.value = value;
         return this;
     }
 
-    public submitButtonColor(value: 'accent' | 'primary' | 'warn'): AeDynamicFormBuilder {
+    /**
+     * @description set the color of submit button.
+     */
+    public submitButtonColor(value: 'accent' | 'primary' | 'warn'): AeFormBuilder {
         this.dynamicForm.submitButton.color = value;
         return this;
     }
 
-    public newControl(name: string): AeDynamicFormBuilder {
+    /**
+     * @description set the name of the current controller.
+     */
+    public newControl(name: string): AeFormBuilder {
         this.newFormControlHolder = { name };
         return this;
     }
 
-    public state(state: string): AeDynamicFormBuilder {
+    /**
+     * @description set the state of the controller.
+     */
+    public state(state: string): AeFormBuilder {
         this.newFormControlHolder = { ...this.newFormControlHolder, state };
         return this;
     }
 
-    public type(type: InputType): AeDynamicFormBuilder {
+    /**
+     * @description set the type of the controller.
+     */
+    public type(type: InputType): AeFormBuilder {
         this.newFormControlHolder = { ...this.newFormControlHolder, type };
         return this;
     }
 
-    public autocomplete(autocomplete: InputAutocompleteType): AeDynamicFormBuilder {
+    /**
+     * @description set the autocomplete of the input element.
+     */
+    public autocomplete(autocomplete: InputAutocompleteType): AeFormBuilder {
         this.newFormControlHolder = { ...this.newFormControlHolder, autocomplete };
         return this;
     }
 
-    public placeholder(placeholder: string): AeDynamicFormBuilder {
+    /**
+     * @description set the placeholder of the input element.
+     */
+    public placeholder(placeholder: string): AeFormBuilder {
         this.newFormControlHolder = { ...this.newFormControlHolder, placeholder };
         return this;
     }
-
-    public hint(hint: string): AeDynamicFormBuilder {
+    /**
+     * @description set the hint element value.
+     */
+    public hint(hint: string): AeFormBuilder {
         this.newFormControlHolder = { ...this.newFormControlHolder, hint };
         return this;
     }
 
-    public label(label: string): AeDynamicFormBuilder {
+    /**
+     * @description set the value of lavel element.
+     */
+    public label(label: string): AeFormBuilder {
         this.newFormControlHolder = { ...this.newFormControlHolder, label };
         return this;
     }
 
-    public options(options: string[]): AeDynamicFormBuilder {
+    /**
+     * @description set the options of input element (only for the types like select)
+     */
+    public options(options: string[]): AeFormBuilder {
         this.newFormControlHolder = { ...this.newFormControlHolder, options };
         return this;
     }
 
-    public icon(icon: IconType): AeDynamicFormBuilder {
+    /**
+     * @description set the icon of the input element.
+     */
+    public icon(icon: IconType): AeFormBuilder {
         this.newFormControlHolder = { ...this.newFormControlHolder, icon };
         return this;
     }
 
+    /**
+     * @description add a custom validator function for the input value.
+     */
     public customValidator(validator: (value: string) => ValidationErrors): void {
         this.newFormControlHolder.validators.push((control) => validator(control.value));
     }
 
-    public required(): AeDynamicFormBuilder {
+    /**
+     * @description set the input field required.
+     */
+    public required(): AeFormBuilder {
         this.newFormControlHolder = { ...this.newFormControlHolder, required: true };
         return this;
     }
-    public min(min: number): AeDynamicFormBuilder {
+
+    /**
+     * @description set the min length or date value of the value of the input element.
+     */
+    public min(min: number): AeFormBuilder {
         this.newFormControlHolder = { ...this.newFormControlHolder, min };
         return this;
     }
 
-    public max(max: number): AeDynamicFormBuilder {
+    /**
+     * @description set the max length or date value of the value of the input element.
+     */
+    public max(max: number): AeFormBuilder {
         this.newFormControlHolder = { ...this.newFormControlHolder, max };
         return this;
     }
 
-    public buildFormControl(): AeDynamicFormBuilder {
+    /**
+     * @description after configuring the input control, run this method to add the input control to the form.
+     * Then, another input control can be added. 
+     */
+    public buildFormControl(): AeFormBuilder {
         this.dynamicForm.formInputs.push({ ...this.newFormControlHolder });
         this.newFormControlHolder = null;
         return this;
     }
 
+    /**
+     * @description After configuring everything, run this method to get the instance of the AeDyanmicForm.
+     */
     public buildForm(): AeDynamicForm {
         return this.dynamicForm;
     }
