@@ -6,15 +6,21 @@
                 [placeholder]="formInput.placeholder" [value]="formInput.state" [autocomplete]="formInput.autocomplete">
             <mat-icon matSuffix>{{formInput.icon}}</mat-icon>
             <mat-hint>{{formInput.hint}} </mat-hint>
-            <mat-error style="display: block; position: relative;">
-                {{errorMessage(formInput.name)}}
-            </mat-error>
         </mat-form-field>
+
+        <mat-error style="display: inline; position: relative;">
+            <li *ngFor="let err of errorMessage(formInput.name)">
+                {{err}}
+            </li>
+
+        </mat-error>
 
     </div>
 
     <div *ngIf="input.submitButton">
         <button mat-raised-button (click)="submit()"
-            [color]="input.submitButton.color">{{input.submitButton.value || 'Submit'}}</button>
+            [color]="input.submitButton.color"
+            [disabled]="!isFormSubmitable()"
+            >{{input.submitButton.value || 'Submit'}}</button>
     </div>
 </form>

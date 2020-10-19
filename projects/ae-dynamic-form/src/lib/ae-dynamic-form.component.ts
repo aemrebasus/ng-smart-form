@@ -24,14 +24,19 @@ export class AeDynamicFormComponent implements OnInit {
     .icon('360')
     .label('First Name')
     .required()
-    .max(10)
-    .min(3)
+    .maxLength(10)
+    .minLength(3)
     .buildFormControl()
     .newControl('lastName')
     .placeholder('Type Last Name')
     .icon('perm_camera_mic')
     .required()
     .label('Last Name')
+    .buildFormControl()
+    .newControl('dbirth')
+    .type('date')
+    .required()
+    .maxDate(Date.now())
     .buildFormControl()
     .buildForm();
 
@@ -67,9 +72,15 @@ export class AeDynamicFormComponent implements OnInit {
   }
 
   public isFormSubmitable(): boolean {
-    return this.isFormValid() && this.isFormTouched() && this.isFormDirty();
+    return this.isFormFieldsValid()
+      && this.isFormValid()
+      && this.isFormTouched()
+      && this.isFormDirty();
   }
 
+  public isFormFieldsValid(): boolean {
+    return Object.values(this.formGroup.controls).map(c => c.valid && c.touched && c.dirty).reduce((f, s) => f && s);
+  }
   public isFormValid(): boolean {
     return this.formGroup.valid;
   }
@@ -87,6 +98,7 @@ export class AeDynamicFormComponent implements OnInit {
   }
 
   public submit(): void {
+    console.log(this.formGroup.value);
     if (this.isFormSubmitable()) {
       if (this.input.submitButton.action) {
         this.input.submitButton.action(this.formGroup.value);

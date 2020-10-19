@@ -185,7 +185,7 @@ export class AeFormBuilder {
      */
     public required(): AeFormBuilder {
         this.addValidator((control) => {
-            return control.value?.length === '' ? { required: 'Field is required' } : null;
+            return control.value === '' ? { required: 'Field is required!' } : null;
         });
         return this;
     }
@@ -193,9 +193,9 @@ export class AeFormBuilder {
     /**
      * @description set the min length or date value of the value of the input element.
      */
-    public min(min: number): AeFormBuilder {
+    public minLength(minLength: number): AeFormBuilder {
         this.addValidator((control) => {
-            return control.value?.length < min ? { min: `Field must contain at least ${min} chracter.` } : null;
+            return control.value?.length < minLength ? { minLength: `Field must contain at least ${minLength} chracter!` } : null;
         }
         );
         return this;
@@ -204,11 +204,34 @@ export class AeFormBuilder {
     /**
      * @description set the max length or date value of the value of the input element.
      */
-    public max(max: number): AeFormBuilder {
+    public maxLength(maxLength: number): AeFormBuilder {
         this.addValidator(
             (control) => {
-                return control.value?.length > max
-                    ? { max: `Field must contain at most ${max} chracter!` }
+                return control.value?.length > maxLength
+                    ? { maxLength: `Field must contain at most ${maxLength} chracter!` }
+                    : null;
+            }
+        );
+        return this;
+    }
+
+
+    public maxDate(max: number): AeFormBuilder {
+        this.addValidator(
+            (control) => {
+                return Date.parse(control.value) > max
+                    ? { maxDate: `Field must be before the ${new Date(max).toLocaleDateString()}` }
+                    : null;
+            }
+        );
+        return this;
+    }
+
+    public minDate(min: number): AeFormBuilder {
+        this.addValidator(
+            (control) => {
+                return Date.parse(control.value) < min
+                    ? { minDate: `Field must be after the ${new Date(min).toLocaleDateString()}` }
                     : null;
             }
         );
