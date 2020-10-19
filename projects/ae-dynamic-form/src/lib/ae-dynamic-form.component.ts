@@ -25,6 +25,7 @@ export class AeDynamicFormComponent implements OnInit {
 
   @Input() input: AeDynamicForm = new AeFormBuilder()
     .title('Form Title')
+
     .newControl('firstName')
     .placeholder('Type First Name')
     .icon('360')
@@ -33,18 +34,44 @@ export class AeDynamicFormComponent implements OnInit {
     .maxLength(10)
     .minLength(3)
     .buildFormControl()
+
     .newControl('lastName')
     .placeholder('Type Last Name')
     .icon('perm_camera_mic')
     .required()
     .label('Last Name')
     .buildFormControl()
+
     .newControl('dbirth')
     .type('date')
     .startDate(Date.now())
     .required()
     .maxDate(Date.now())
     .buildFormControl()
+
+    .newControl('Select Option').type('select')
+    .options([{ label: 'Option 1', value: 'Value 1', },
+    { label: 'Option 2', value: 'Value 2', },
+    { label: 'Option 3', value: 'Value 3', }
+    ]).buildFormControl()
+
+
+    .newControl('range')
+    .type('range')
+    .label('Range Label')
+    .range({ min: 0, max: 100 })
+    .buildFormControl()
+
+
+    .newControl('gender')
+    .type('radio')
+    .options([
+      { label: 'male', value: 'male' },
+      { label: 'female', value: 'female' },
+    ])
+    .buildFormControl()
+
+
     .buildForm();
 
   ngOnInit(): void {
@@ -68,48 +95,36 @@ export class AeDynamicFormComponent implements OnInit {
     return this.formGroup.controls[controlName];
   }
 
-  private getFormControlErrorsByName(controlName: string): { [key: string]: string | null } {
+  private getErrorsByControlName(controlName: string): { [key: string]: string | null } {
     return this.getFormControlByName(controlName).errors;
   }
 
+
+  //  Form Validation Check
+
   public errorMessage(controlName: string): string[] {
-    const errors = this.getFormControlErrorsByName(controlName);
+    const errors = this.getErrorsByControlName(controlName);
     if (errors) {
       return Object.values(errors);
     } else {
       return null;
     }
   }
-
-  public reset(): void {
-    this.formGroup.reset();
-  }
-
   public isFormSubmitable(): boolean {
     return this.isFormFieldsValid()
       && this.isFormValid()
       && this.isFormTouched()
       && this.isFormDirty();
   }
-
   public isFormFieldsValid(): boolean {
     return Object.values(this.formGroup.controls).map(c => c.valid && c.touched && c.dirty).reduce((f, s) => f && s);
   }
-  public isFormValid(): boolean {
-    return this.formGroup.valid;
-  }
+  public isFormValid(): boolean { return this.formGroup.valid; }
+  public isFormInvalid(): boolean { return this.formGroup.invalid; }
+  public isFormTouched(): boolean { return this.formGroup.touched; }
+  public isFormDirty(): boolean { return this.formGroup.dirty; }
 
-  public isFormInvalid(): boolean {
-    return this.formGroup.invalid;
-  }
-
-  public isFormTouched(): boolean {
-    return this.formGroup.touched;
-  }
-
-  public isFormDirty(): boolean {
-    return this.formGroup.dirty;
-  }
+  // Submit Reset Methods
 
   public submit(): void {
     console.log(this.formGroup.value);
@@ -123,36 +138,23 @@ export class AeDynamicFormComponent implements OnInit {
       console.log('Form is not ready yet');
     }
   }
+  public reset(): void { this.formGroup.reset(); }
 
 
-  // Template helper
-  public isTextField(value: InputType | null): boolean {
-    if (!value) {
-      return true;
-    }
-    return TEXT_FIELD.includes(value);
-  }
+  // Is Input type === ?
+  public isTextField(value: InputType | null): boolean { if (!value) { return true; } return TEXT_FIELD.includes(value); }
+  public isDateField(value: InputType | null): boolean { return DATE_FIELD.includes(value); }
+  public isBasicDateField(value: DateControlType): boolean { return value === 'basic' || value == null; }
+  public isRangeDateField(value: DateControlType): boolean { return value === 'range'; }
+  public isSelectField(type: InputType): boolean { return SELECT_FIELD.includes(type); }
+  public isMultipleSelect(type: InputType): boolean { return type === 'select-many'; }
+  public isTextArea(type: InputType): boolean { return type === 'text-area'; }
+  public isCheckbox(type: InputType): boolean { return type === 'checkbox'; }
+  public isRadio(type: InputType): boolean { return type === 'radio'; }
+  public isRange(type: InputType): boolean { return type === 'range'; }
 
-  public isDateField(value: InputType | null): boolean {
-    return DATE_FIELD.includes(value);
-  }
-
-  public isBasicDateField(value: DateControlType): boolean {
-    return value === 'basic' || value == null;
-  }
-
-  public isRangeDateField(value: DateControlType): boolean {
-    return value === 'range';
-  }
-
-  // public inComparisonDateField(value: DateControlType): boolean {
-  //   return value === 'comparison';
-  // }
-
-  // public isConstantRangeDateField(value: DateControlType): boolean {
-  //   return value === 'constant-range';
-  // }
-
+  // public inComparisonDateField(value: DateControlType): boolean {    return value === 'comparison'; }
+  // public isConstantRangeDateField(value: DateControlType): boolean {     return value === 'constant-range';   }
 
 
 }

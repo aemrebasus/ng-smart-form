@@ -4,14 +4,19 @@ import { InputType, InputAutocompleteType } from 'form-input-type';
 import validator from 'validator';
 
 
-
-
+export interface InputOption {
+    label?: string;
+    value: string;
+    icon?: IconType;
+}
 
 export type DateControlType = 'range' | 'basic';
 
 // export type DateConstantRange =
 //     | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15
 //     | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31;
+
+
 /**
  * @field name: string;
  * @field type?: InputType;
@@ -39,7 +44,8 @@ export interface AeFormControl {
     hint?: string;
     placeholder?: string;
     label?: string;
-    options?: string[];
+    options?: InputOption[];
+    range?: { min: number, max: number };
     icon?: IconType;
 }
 
@@ -105,6 +111,16 @@ export class AeFormBuilder {
      * ```
      */
     constructor() { }
+
+
+
+
+
+
+
+
+
+
     /**
      * @description AeDynamicForm instance.
      */
@@ -199,22 +215,32 @@ export class AeFormBuilder {
     }
 
     /**
-     * @description set the options of input element (only for the types like select)
+     * @param options of select input
      */
-    public options(options: string[]): AeFormBuilder {
+    public options(options: InputOption[]): AeFormBuilder {
         this.newFormControlHolder = { ...this.newFormControlHolder, options };
         return this;
     }
 
     /**
-     * @description set the icon of the input element.
+     * @param range of the range input.
+     */
+    public range(range: { min: number, max: number }): AeFormBuilder {
+        this.newFormControlHolder = { ...this.newFormControlHolder, range };
+        return this;
+    }
+
+    /**
+     * @param icon shown left side of the input.
      */
     public icon(icon: IconType): AeFormBuilder {
         this.newFormControlHolder = { ...this.newFormControlHolder, icon };
         return this;
     }
+
+
     /**
-     * @Validator
+     * @param validator$ ValidatorFn.
      */
     public addValidator(validator$: ValidatorFn): AeFormBuilder {
         this.newFormControlHolder.validators = [
@@ -225,7 +251,7 @@ export class AeFormBuilder {
     }
 
     /**
-     * @validator
+     * @description set the field required.
      */
     public required(): AeFormBuilder {
         this.addValidator((control) => {
@@ -235,7 +261,7 @@ export class AeFormBuilder {
     }
 
     /**
-     * @validator
+     * @description set the minLength requried for the field.
      */
     public minLength(minLength: number): AeFormBuilder {
         this.addValidator((control) => {
@@ -246,7 +272,7 @@ export class AeFormBuilder {
     }
 
     /**
-     * @validator
+     * @description set the maxLength of the field required.
      */
     public maxLength(maxLength: number): AeFormBuilder {
         this.addValidator(
@@ -259,7 +285,9 @@ export class AeFormBuilder {
         return this;
     }
 
-
+    /**
+     * @description set the required maxDate of the field.
+     */
     public maxDate(max: number): AeFormBuilder {
         this.addValidator(
             (control) => {
@@ -272,7 +300,7 @@ export class AeFormBuilder {
     }
 
     /**
-     * @Validator
+     * @description set the minDate required for the field.
      */
     public minDate(min: number): AeFormBuilder {
         this.addValidator(
@@ -286,7 +314,7 @@ export class AeFormBuilder {
     }
 
     /**
-     * @Validator
+     * @description set the required that field must be email.
      */
     public email(): AeFormBuilder {
         this.addValidator(
@@ -299,26 +327,24 @@ export class AeFormBuilder {
         return this;
     }
 
-    // Date field ...♦
 
+    /**
+     * @description for the date field. set the start date of the date input.
+     */
     public startDate(date: number): AeFormBuilder {
         this.newFormControlHolder.startDate = new Date(date);
         return this;
     }
+
+    /**
+     * @description there are 2 types of date input as basic and range. Choose one.
+     */
     public dateType(type: DateControlType): AeFormBuilder {
         this.newFormControlHolder.dateType = type;
         return this;
     }
 
-    public dateRange(range: boolean): AeFormBuilder {
-        this.newFormControlHolder.dateRange = range;
-        return this;
-    }
 
-    // public dateConstantRange(contantRange: DateConstantRange): AeFormBuilder {
-    //     this.newFormControlHolder.dateConstantRange = contantRange;
-    //     return this;
-    // }
 
     /**
      * @description after configuring the input control, run this method to add the input control to the form.
@@ -337,5 +363,17 @@ export class AeFormBuilder {
         return this.dynamicForm;
     }
 
+
+
+
+    // public dateRange(range: boolean): AeFormBuilder {
+    //     this.newFormControlHolder.dateRange = range;
+    //     return this;
+    // }
+
+    // public dateConstantRange(contantRange: DateConstantRange): AeFormBuilder {
+    //     this.newFormControlHolder.dateConstantRange = contantRange;
+    //     return this;
+    // }
 }
 

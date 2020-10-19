@@ -12,7 +12,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
 import { AeDynamicFormComponent } from './ae-dynamic-form.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
   declarations: [AeDynamicFormComponent],
@@ -30,6 +31,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatBadgeModule,
     MatNativeDateModule,
     MatDatepickerModule,
+    MatCheckboxModule,
+    MatRadioModule
   ],
   exports: [AeDynamicFormComponent]
 })
