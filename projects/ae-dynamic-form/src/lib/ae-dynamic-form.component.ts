@@ -1,8 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { AeDynamicForm, AeFormBuilder } from './ae-dynamic-form.class';
-import { aeValidators } from './builtin-validators';
-
 
 @Component({
   selector: 'ae-dynamic-form',
@@ -12,28 +10,36 @@ import { aeValidators } from './builtin-validators';
 export class AeDynamicFormComponent implements OnInit {
 
   protected formGroup: FormGroup;
+
+  public isSubmitted$ = false;
+  public get isSubmitted(): boolean { return this.isSubmitted$; }
+  public set isSubmitted(value: boolean) { this.isSubmitted$ = value; }
+
+  @Output() submitted = new EventEmitter<{ [key: string]: string }>();
+
   @Input() input: AeDynamicForm = new AeFormBuilder()
     .title('Form Title')
-      .newControl('firstName')
-        .placeholder('Type First Name')
-        .icon('360')
-        .label('First Name')
-        .required()
-        .max(10)
-        .min(3)
-        .buildFormControl()
-      .newControl('lastName')
-        .placeholder('Type Last Name')
-        .icon('perm_camera_mic')
-        .label('Last Name')
-        .buildFormControl()
+    .newControl('firstName')
+    .placeholder('Type First Name')
+    .icon('360')
+    .label('First Name')
+    .required()
+    .max(10)
+    .min(3)
+    .buildFormControl()
+    .newControl('lastName')
+    .placeholder('Type Last Name')
+    .icon('perm_camera_mic')
+    .required()
+    .label('Last Name')
+    .buildFormControl()
     .buildForm();
 
   ngOnInit(): void {
     this.initFormGroup();
   }
 
-  initFormGroup(): void {
+  private initFormGroup(): void {
     const object = {};
     this.input.formInputs.forEach(i => object[i.name] = new FormControl(i.state, i.validators));
     this.formGroup = new FormGroup(object);
@@ -56,12 +62,40 @@ export class AeDynamicFormComponent implements OnInit {
     }
   }
 
-  reset(): void {
+  public reset(): void {
     this.formGroup.reset();
   }
 
-  submit(): void {
-    console.log(this.formGroup.value);
+  public isFormSubmitable(): boolean {
+    return this.isFormValid() && this.isFormTouched() && this.isFormDirty();
+  }
+
+  public isFormValid(): boolean {
+    return this.formGroup.valid;
+  }
+
+  public isFormInvalid(): boolean {
+    return this.formGroup.invalid;
+  }
+
+  public isFormTouched(): boolean {
+    return this.formGroup.touched;
+  }
+
+  public isFormDirty(): boolean {
+    return this.formGroup.dirty;
+  }
+
+  public submit(): void {
+    if (this.isFormSubmitable()) {
+      if (this.input.submitButton.action) {
+        this.input.submitButton.action(this.formGroup.value);
+      }
+      this.submitted.emit(this.formGroup.value);
+      this.isSubmitted = true;
+    } else {
+      console.log('Form is not ready yet');
+    }
   }
 
 }

@@ -1,20 +1,68 @@
-import { FormBuilder, ValidationErrors, ValidatorFn, } from '@angular/forms';
+import { FormControl, ValidatorFn, } from '@angular/forms';
 import { IconType } from 'ng-icon-type';
 import { InputType, InputAutocompleteType } from 'form-input-type';
-
+import validator from 'validator';
 
 export interface AeDynamicForm {
     formTitle?: string;
     formInputs: AeFormControl[];
-    submitButton?: { value: string, color: 'accent' | 'warn' | 'primary' };
+    submitButton?: { value: string, color: 'accent' | 'warn' | 'primary', action?: (value: { [key: string]: string }) => void };
+
 }
 
 
 /**
  * @description Build forms using builder methods.
+ *
+ * ```
+ *
+ *  @Input() input: AeDynamicForm = new AeFormBuilder()
+ *                            .title('Form Title')
+ *                              .newControl('firstName')
+ *                              .placeholder('Type First Name')
+ *                              .icon('360')
+ *                              .label('First Name')
+ *                              .required()
+ *                              .max(10)
+ *                              .min(3)
+ *                              .buildFormControl()
+ *                            .newControl('lastName')
+ *                              .placeholder('Type Last Name')
+ *                              .icon('perm_camera_mic')
+ *                              .label('Last Name')
+ *                              .buildFormControl()
+ *                            .buildForm(); </pre>
+ *
+ * ```
  */
 export class AeFormBuilder {
 
+    /**
+     *
+     * @Sample AeFormBuilder sample.
+     *
+     * ```
+     *
+     *  @Input() input: AeDynamicForm = new AeFormBuilder()
+     *                            .title('Form Title')
+     *                              .newControl('firstName')
+     *                              .placeholder('Type First Name')
+     *                              .icon('360')
+     *                              .label('First Name')
+     *                              .required()
+     *                              .max(10)
+     *                              .min(3)
+     *                              .buildFormControl()
+     *                            .newControl('lastName')
+     *                              .placeholder('Type Last Name')
+     *                              .icon('perm_camera_mic')
+     *                              .label('Last Name')
+     *                              .buildFormControl()
+     *                            .buildForm(); </pre>
+     *
+     * ```
+     */
+    constructor() { }
     /**
      * @description AeDynamicForm instance.
      */
@@ -57,7 +105,7 @@ export class AeFormBuilder {
      * @description set the name of the current controller.
      */
     public newControl(name: string): AeFormBuilder {
-        this.newFormControlHolder = { name };
+        this.newFormControlHolder = { name, validators: [() => null], options: [] };
         return this;
     }
 
@@ -124,18 +172,21 @@ export class AeFormBuilder {
         return this;
     }
 
-    /**
-     * @description add a custom validator function for the input value.
-     */
-    public customValidator(validator: (value: string) => ValidationErrors): void {
-        this.newFormControlHolder.validators.push((control) => validator(control.value));
+    public addValidator(validator$: ValidatorFn): AeFormBuilder {
+        this.newFormControlHolder.validators = [
+            ...this.newFormControlHolder.validators,
+            validator$
+        ];
+        return;
     }
 
     /**
      * @description set the input field required.
      */
     public required(): AeFormBuilder {
-        this.newFormControlHolder = { ...this.newFormControlHolder, required: true };
+        this.addValidator((control) => {
+            return control.value?.length === '' ? { required: 'Field is required' } : null;
+        });
         return this;
     }
 
@@ -143,7 +194,10 @@ export class AeFormBuilder {
      * @description set the min length or date value of the value of the input element.
      */
     public min(min: number): AeFormBuilder {
-        this.newFormControlHolder = { ...this.newFormControlHolder, min };
+        this.addValidator((control) => {
+            return control.value?.length < min ? { min: `Field must contain at least ${min} chracter.` } : null;
+        }
+        );
         return this;
     }
 
@@ -151,13 +205,30 @@ export class AeFormBuilder {
      * @description set the max length or date value of the value of the input element.
      */
     public max(max: number): AeFormBuilder {
-        this.newFormControlHolder = { ...this.newFormControlHolder, max };
+        this.addValidator(
+            (control) => {
+                return control.value?.length > max
+                    ? { max: `Field must contain at most ${max} chracter!` }
+                    : null;
+            }
+        );
+        return this;
+    }
+
+    public email(): AeFormBuilder {
+        this.addValidator(
+            (control) => {
+                return validator.isEmail(control.value)
+                    ? null
+                    : { email: `${control.value} is not a valid email!` };
+            }
+        );
         return this;
     }
 
     /**
      * @description after configuring the input control, run this method to add the input control to the form.
-     * Then, another input control can be added. 
+     * Then, another input control can be added.s
      */
     public buildFormControl(): AeFormBuilder {
         this.dynamicForm.formInputs.push({ ...this.newFormControlHolder });
@@ -196,9 +267,6 @@ export interface AeFormControl {
     placeholder?: string;
     label?: string;
     options?: string[];
-    min?: number;
-    max?: number;
-    required?: boolean;
     icon?: IconType;
 }
 
