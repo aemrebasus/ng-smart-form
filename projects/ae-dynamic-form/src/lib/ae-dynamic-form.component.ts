@@ -41,7 +41,7 @@ export class AeDynamicFormComponent implements OnInit {
     .buildFormControl()
     .newControl('dbirth')
     .type('date')
-    .dateType('range')
+    .startDate(Date.now())
     .required()
     .maxDate(Date.now())
     .buildFormControl()
@@ -52,10 +52,15 @@ export class AeDynamicFormComponent implements OnInit {
   }
 
   private initFormGroup(): void {
-    const object = {
-      dateRangeHelper0: new FormControl(''),
-    };
-    this.input.formInputs.forEach(i => object[i.name] = new FormControl(i.state, i.validators));
+    const dateRangeHelper0 = new FormControl('');
+    const object = {};
+    this.input.formInputs.forEach(i => {
+      if (i.dateType === 'range') {
+        // tslint:disable-next-line: no-string-literal
+        object['dateRangeHelper0'] = dateRangeHelper0;
+      }
+      object[i.name] = new FormControl(i.state, i.validators);
+    });
     this.formGroup = new FormGroup(object);
   }
 

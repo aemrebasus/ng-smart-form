@@ -3,6 +3,48 @@ import { IconType } from 'ng-icon-type';
 import { InputType, InputAutocompleteType } from 'form-input-type';
 import validator from 'validator';
 
+
+
+
+
+export type DateControlType = 'range' | 'basic';
+
+// export type DateConstantRange =
+//     | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15
+//     | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31;
+/**
+ * @field name: string;
+ * @field type?: InputType;
+ * @field state?: string | number;
+ * @field validators?: ValidatorFn | ValidatorFn[];
+ * @field autocomplete?: InputAutocompleteType;
+ * @field hint?: string;
+ * @field placeholder?: string;
+ * @field label?: string;
+ * @field options?: string[];
+ * @field icon?: IconType;
+ * @field dateType?: DateControlType;
+ * @field dateRange?: DateConstantRange;
+ */
+export interface AeFormControl {
+    name: string;
+    type?: InputType;
+    dateType?: DateControlType;
+    dateRange?: boolean;
+    startDate?: Date;
+    // dateConstantRange?: DateConstantRange;
+    state?: string | number;
+    validators?: ValidatorFn[];
+    autocomplete?: InputAutocompleteType;
+    hint?: string;
+    placeholder?: string;
+    label?: string;
+    options?: string[];
+    icon?: IconType;
+}
+
+
+
 export interface AeDynamicForm {
     formTitle?: string;
     formInputs: AeFormControl[];
@@ -183,7 +225,7 @@ export class AeFormBuilder {
     }
 
     /**
-     * @description set the input field required.
+     * @validator
      */
     public required(): AeFormBuilder {
         this.addValidator((control) => {
@@ -193,7 +235,7 @@ export class AeFormBuilder {
     }
 
     /**
-     * @description set the min length or date value of the value of the input element.
+     * @validator
      */
     public minLength(minLength: number): AeFormBuilder {
         this.addValidator((control) => {
@@ -204,7 +246,7 @@ export class AeFormBuilder {
     }
 
     /**
-     * @description set the max length or date value of the value of the input element.
+     * @validator
      */
     public maxLength(maxLength: number): AeFormBuilder {
         this.addValidator(
@@ -259,6 +301,10 @@ export class AeFormBuilder {
 
     // Date field ...♦
 
+    public startDate(date: number): AeFormBuilder {
+        this.newFormControlHolder.startDate = new Date(date);
+        return this;
+    }
     public dateType(type: DateControlType): AeFormBuilder {
         this.newFormControlHolder.dateType = type;
         return this;
@@ -291,41 +337,5 @@ export class AeFormBuilder {
         return this.dynamicForm;
     }
 
-}
-
-
-export type DateControlType = 'range' | 'basic';
-
-// export type DateConstantRange =
-//     | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15
-//     | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31;
-/**
- * @field name: string;
- * @field type?: InputType;
- * @field state?: string | number;
- * @field validators?: ValidatorFn | ValidatorFn[];
- * @field autocomplete?: InputAutocompleteType;
- * @field hint?: string;
- * @field placeholder?: string;
- * @field label?: string;
- * @field options?: string[];
- * @field icon?: IconType;
- * @field dateType?: DateControlType;
- * @field dateRange?: DateConstantRange;
- */
-export interface AeFormControl {
-    name: string;
-    type?: InputType;
-    dateType?: DateControlType;
-    dateRange?: boolean;
-    // dateConstantRange?: DateConstantRange;
-    state?: string | number;
-    validators?: ValidatorFn[];
-    autocomplete?: InputAutocompleteType;
-    hint?: string;
-    placeholder?: string;
-    label?: string;
-    options?: string[];
-    icon?: IconType;
 }
 
