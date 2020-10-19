@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AeFormBuilder } from 'ae-dynamic-form';
 import { AeSideNav } from 'ae-material';
 import { AeDynamicForm } from 'projects/ae-dynamic-form/src/public-api';
 
@@ -9,7 +10,16 @@ import { AeDynamicForm } from 'projects/ae-dynamic-form/src/public-api';
 })
 export class HomeComponent implements OnInit {
 
-  public currentForm: any;
+  public sampleForm = new AeFormBuilder().title('Form Title')
+    .newControl('name')
+    .type('text')
+    .required()
+    .buildFormControl()
+    .newControl('password')
+    .type('password')
+    .required()
+    .buildFormControl()
+    .buildForm();
 
   public navbar: AeSideNav = {
     list: {
