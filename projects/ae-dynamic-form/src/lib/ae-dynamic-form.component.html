@@ -1,12 +1,45 @@
 <form [formGroup]="formGroup">
     <div *ngFor='let formInput of input.formInputs'>
+
         <!-- text:color:number:email:password:url input -->
-        <mat-form-field>
-            <input [type]="formInput.type" matInput [formControlName]="formInput.name"
-                [placeholder]="formInput.placeholder" [value]="formInput.state" [autocomplete]="formInput.autocomplete">
-            <mat-icon matSuffix>{{formInput.icon}}</mat-icon>
-            <mat-hint>{{formInput.hint}} </mat-hint>
-        </mat-form-field>
+        <span *ngIf="isTextField(formInput.type)">
+            <mat-form-field>
+                <input [type]="formInput.type" matInput [formControlName]="formInput.name"
+                    [placeholder]="formInput.placeholder" [value]="formInput.state"
+                    [autocomplete]="formInput.autocomplete">
+                <mat-icon matSuffix>{{formInput.icon}}</mat-icon>
+                <mat-hint>{{formInput.hint}} </mat-hint>
+            </mat-form-field>
+        </span>
+
+        <span *ngIf="isDateField(formInput.type)">
+            <span *ngIf="isBasicDateField(formInput.dateType)">
+                <mat-form-field appearance="fill">
+                    <mat-label>Choose a date</mat-label>
+                    <input matInput [formControlName]="formInput.name" [matDatepicker]="picker">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </span>
+            <span *ngIf="isRangeDateField(formInput.dateType)">
+                <mat-form-field appearance="fill">
+                    <mat-label>Enter a date range</mat-label>
+                    <mat-date-range-input [rangePicker]="picker">
+                        <input [formControlName]="formInput.name" matStartDate placeholder="Start date">
+                        <input formControlName="dateRangeHelper0" matEndDate placeholder="End date">
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+                </mat-form-field>
+
+            </span>
+
+            <span>
+
+            </span>
+
+        </span>
+
 
         <mat-error style="display: inline; position: relative;">
             <li *ngFor="let err of errorMessage(formInput.name)">
@@ -18,9 +51,7 @@
     </div>
 
     <div *ngIf="input.submitButton">
-        <button mat-raised-button (click)="submit()"
-            [color]="input.submitButton.color"
-            [disabled]="!isFormSubmitable()"
-            >{{input.submitButton.value || 'Submit'}}</button>
+        <button mat-raised-button (click)="submit()" [color]="input.submitButton.color"
+            [disabled]="!isFormSubmitable()">{{input.submitButton.value || 'Submit'}}</button>
     </div>
 </form>

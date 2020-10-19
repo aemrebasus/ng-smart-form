@@ -1,6 +1,13 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
-import { AeDynamicForm, AeFormBuilder } from './ae-dynamic-form.class';
+import { InputType } from 'form-input-type';
+import { AeDynamicForm, AeFormBuilder, DateControlType } from './ae-dynamic-form.class';
+
+const TEXT_FIELD: InputType[] = ['text', 'color', 'number', 'email', 'password', 'search', 'tel', 'url'];
+const SELECT_FIELD: InputType[] = ['select', 'select-many'];
+const RANGE_FIELD: InputType[] = ['range'];
+const DATE_FIELD: InputType[] = ['date', 'datetime-local', 'week', 'time'];
+
 
 @Component({
   selector: 'ae-dynamic-form',
@@ -8,7 +15,6 @@ import { AeDynamicForm, AeFormBuilder } from './ae-dynamic-form.class';
   styleUrls: ['./ae-dynamic-form.component.scss']
 })
 export class AeDynamicFormComponent implements OnInit {
-
   protected formGroup: FormGroup;
 
   public isSubmitted$ = false;
@@ -35,6 +41,7 @@ export class AeDynamicFormComponent implements OnInit {
     .buildFormControl()
     .newControl('dbirth')
     .type('date')
+    .dateType('range')
     .required()
     .maxDate(Date.now())
     .buildFormControl()
@@ -45,7 +52,9 @@ export class AeDynamicFormComponent implements OnInit {
   }
 
   private initFormGroup(): void {
-    const object = {};
+    const object = {
+      dateRangeHelper0: new FormControl(''),
+    };
     this.input.formInputs.forEach(i => object[i.name] = new FormControl(i.state, i.validators));
     this.formGroup = new FormGroup(object);
   }
@@ -109,5 +118,36 @@ export class AeDynamicFormComponent implements OnInit {
       console.log('Form is not ready yet');
     }
   }
+
+
+  // Template helper
+  public isTextField(value: InputType | null): boolean {
+    if (!value) {
+      return true;
+    }
+    return TEXT_FIELD.includes(value);
+  }
+
+  public isDateField(value: InputType | null): boolean {
+    return DATE_FIELD.includes(value);
+  }
+
+  public isBasicDateField(value: DateControlType): boolean {
+    return value === 'basic' || value == null;
+  }
+
+  public isRangeDateField(value: DateControlType): boolean {
+    return value === 'range';
+  }
+
+  // public inComparisonDateField(value: DateControlType): boolean {
+  //   return value === 'comparison';
+  // }
+
+  // public isConstantRangeDateField(value: DateControlType): boolean {
+  //   return value === 'constant-range';
+  // }
+
+
 
 }

@@ -1,4 +1,4 @@
-import { FormControl, ValidatorFn, } from '@angular/forms';
+import { ValidatorFn } from '@angular/forms';
 import { IconType } from 'ng-icon-type';
 import { InputType, InputAutocompleteType } from 'form-input-type';
 import validator from 'validator';
@@ -171,7 +171,9 @@ export class AeFormBuilder {
         this.newFormControlHolder = { ...this.newFormControlHolder, icon };
         return this;
     }
-
+    /**
+     * @Validator
+     */
     public addValidator(validator$: ValidatorFn): AeFormBuilder {
         this.newFormControlHolder.validators = [
             ...this.newFormControlHolder.validators,
@@ -227,6 +229,9 @@ export class AeFormBuilder {
         return this;
     }
 
+    /**
+     * @Validator
+     */
     public minDate(min: number): AeFormBuilder {
         this.addValidator(
             (control) => {
@@ -238,6 +243,9 @@ export class AeFormBuilder {
         return this;
     }
 
+    /**
+     * @Validator
+     */
     public email(): AeFormBuilder {
         this.addValidator(
             (control) => {
@@ -248,6 +256,23 @@ export class AeFormBuilder {
         );
         return this;
     }
+
+    // Date field ...♦
+
+    public dateType(type: DateControlType): AeFormBuilder {
+        this.newFormControlHolder.dateType = type;
+        return this;
+    }
+
+    public dateRange(range: boolean): AeFormBuilder {
+        this.newFormControlHolder.dateRange = range;
+        return this;
+    }
+
+    // public dateConstantRange(contantRange: DateConstantRange): AeFormBuilder {
+    //     this.newFormControlHolder.dateConstantRange = contantRange;
+    //     return this;
+    // }
 
     /**
      * @description after configuring the input control, run this method to add the input control to the form.
@@ -268,6 +293,12 @@ export class AeFormBuilder {
 
 }
 
+
+export type DateControlType = 'range' | 'basic';
+
+// export type DateConstantRange =
+//     | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15
+//     | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31;
 /**
  * @field name: string;
  * @field type?: InputType;
@@ -279,10 +310,15 @@ export class AeFormBuilder {
  * @field label?: string;
  * @field options?: string[];
  * @field icon?: IconType;
+ * @field dateType?: DateControlType;
+ * @field dateRange?: DateConstantRange;
  */
 export interface AeFormControl {
     name: string;
     type?: InputType;
+    dateType?: DateControlType;
+    dateRange?: boolean;
+    // dateConstantRange?: DateConstantRange;
     state?: string | number;
     validators?: ValidatorFn[];
     autocomplete?: InputAutocompleteType;
