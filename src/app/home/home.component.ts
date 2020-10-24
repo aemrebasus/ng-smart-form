@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AeFormBuilder } from 'ae-dynamic-form';
 import { AeSideNav } from 'ae-material';
-import { AeDynamicForm } from 'projects/ae-dynamic-form/src/public-api';
-
+import { CONTACT_FORM } from './a-contact-form';
+import { SIGNIN_FORM } from './a-signin-form';
+import { SUBSCRIPTION_FORM } from './a-subscription-form';
+import { TASK_FORM } from './a-task-form';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -10,21 +11,21 @@ import { AeDynamicForm } from 'projects/ae-dynamic-form/src/public-api';
 })
 export class HomeComponent implements OnInit {
 
-  public sampleForm = new AeFormBuilder().title('Form Title')
-    .newControl('name')
-    .type('text')
-    .required()
-    .buildFormControl()
-    .newControl('password')
-    .type('password')
-    .required()
-    .buildFormControl()
-    .buildForm();
+  public contactForm = CONTACT_FORM;
+  public signinForm = SIGNIN_FORM;
+  public subscriptionForm = SUBSCRIPTION_FORM;
+  public taskForm = TASK_FORM;
+  public currentForm = 'contact';
+
+
 
   public navbar: AeSideNav = {
     list: {
       list: [
-        { value: 'Login Form', icon: 'login' },
+        { value: 'Login Form', icon: 'login', action: () => this.currentForm = 'login' },
+        { value: 'Contact Form', icon: 'contact_mail', action: () => this.currentForm = 'contact' },
+        { value: 'Subscription Form', icon: 'subscriptions', action: () => this.currentForm = 'subscription' },
+        { value: 'Task Form', icon: 'check', action: () => this.currentForm = 'task' },
       ]
     },
     toolbar: {

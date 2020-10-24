@@ -79,9 +79,7 @@
 
         <!-- Checkbox -->
         <span *ngIf='isCheckbox(formInput.type)'>
-            <mat-checkbox [formControlName]="formInput.name">
-                {{formInput.label}}
-            </mat-checkbox>
+            <mat-checkbox [formControlName]="formInput.name"> {{formInput.label}} </mat-checkbox>
         </span>
 
 
@@ -94,12 +92,14 @@
         </span>
 
 
-        <span *ngIf="isRadio(formInput.type)">
+        <span *ngIf="isRadio(formInput.type)" class="radio-group">
             <mat-radio-group #radioGroup [formControlName]="formInput.name" aria-label="Select an option">
-                <mat-radio-button [value]="option.value" *ngFor="let option of formInput.options">{{option.label}}
+                <mat-radio-button [value]="option.value" *ngFor="let option of formInput.options"
+                    style="display: block;">{{option.label}}
                 </mat-radio-button>
             </mat-radio-group>
-            <input [formControlName]="formInput.name" [(ngModel)]="radioGroup.value" />
+            <input [formControlName]="formInput.name" [(ngModel)]="radioGroup.value" disabled
+                style="position:fixed; visibility: hidden;" />
         </span>
 
 
