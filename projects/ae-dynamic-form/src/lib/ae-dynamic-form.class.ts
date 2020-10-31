@@ -7,7 +7,7 @@ import { InputType, InputAutocompleteType } from 'form-input-type';
 
 /**
  * @field visible value of the option
- * @field actual value of the option 
+ * @field actual value of the option
  * @field icon of the option
  * @field checked whether the option is checked or not
  * @field disabled whether the option is disabled or not
@@ -96,7 +96,7 @@ type SubmitButtonType = {
 };
 
 /**
- * @field formTitle is the title of the form 
+ * @field formTitle is the title of the form
  * @field formInputs is the array of AeFormControl objects.
  * @field submitButton is an object of SubmitButtonType
  */
