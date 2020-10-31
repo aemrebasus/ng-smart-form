@@ -1,40 +1,5 @@
 <ae-side-nav [input]='navbar'>
     <div class="container">
-
-        <div class="card" *ngIf="currentForm =='login'">
-            <div class="card-header">
-                <h2>Signin Form</h2>
-            </div>
-            <div class="card-body">
-                <ae-dynamic-form [input]="signinForm"></ae-dynamic-form>
-            </div>
-        </div>
-
-        <div class="card" *ngIf="currentForm =='contact'">
-            <div class="card-header">
-                <h2>Contact Form</h2>
-            </div>
-            <div class="card-body">
-                <ae-dynamic-form [input]="contactForm"></ae-dynamic-form>
-            </div>
-        </div>
-
-        <div class="card" *ngIf="currentForm =='subscription'">
-            <div class="card-header">
-                <h2>Subscription Form</h2>
-            </div>
-            <div class="card-body">
-                <ae-dynamic-form [input]="subscriptionForm"></ae-dynamic-form>
-            </div>
-        </div>
-
-        <div class="card" *ngIf="currentForm =='task'">
-            <div class="card-header">
-                <h2>Task Form</h2>
-            </div>
-            <div class="card-body">
-                <ae-dynamic-form [input]="taskForm"></ae-dynamic-form>
-            </div>
-        </div>
+        <router-outlet></router-outlet>
     </div>
 </ae-side-nav>

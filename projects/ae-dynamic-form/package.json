@@ -1,15 +1,15 @@
 {
   "name": "ae-dynamic-form",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "peerDependencies": {
-    "@angular/common": "^10.1.6",
-    "@angular/core": "^10.1.6"
+    "@angular/common": "10.1.6",
+    "@angular/core": "10.1.6"
   },
   "dependencies": {
-    "tslib": "^2.0.0",
-    "ng-icon-type": "^1.0.0",
-    "address-type": "^1.0.0",
-    "form-input-type": "^1.0.0",
-    "validator": "13.1.17"
+    "tslib": "2.0.0",
+    "ng-icon-type": "1.0.0",
+    "address-type": "1.0.0",
+    "form-input-type": "1.0.0",
+    "country-state-city": "1.0.5"
   }
 }

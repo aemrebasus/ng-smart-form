@@ -9,11 +9,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { AeDynamicFormModule } from 'projects/ae-dynamic-form/src/public-api';
+import { FormWrapperComponent } from './form-wrapper/form-wrapper.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    HomeComponent,
+    FormWrapperComponent
   ],
   imports: [
     BrowserModule,

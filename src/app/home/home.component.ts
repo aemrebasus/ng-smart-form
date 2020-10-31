@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { AeSideNav } from 'ae-material';
-import { CONTACT_FORM } from './a-contact-form';
-import { SIGNIN_FORM } from './a-signin-form';
-import { SUBSCRIPTION_FORM } from './a-subscription-form';
-import { TASK_FORM } from './a-task-form';
+
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -11,30 +10,22 @@ import { TASK_FORM } from './a-task-form';
 })
 export class HomeComponent implements OnInit {
 
-  public contactForm = CONTACT_FORM;
-  public signinForm = SIGNIN_FORM;
-  public subscriptionForm = SUBSCRIPTION_FORM;
-  public taskForm = TASK_FORM;
-  public currentForm = 'contact';
-
-
-
+  constructor() { }
   public navbar: AeSideNav = {
     list: {
       list: [
-        { value: 'Login Form', icon: 'login', action: () => this.currentForm = 'login' },
-        { value: 'Contact Form', icon: 'contact_mail', action: () => this.currentForm = 'contact' },
-        { value: 'Subscription Form', icon: 'subscriptions', action: () => this.currentForm = 'subscription' },
-        { value: 'Task Form', icon: 'check', action: () => this.currentForm = 'task' },
+        { value: 'Login Form', icon: 'login', route: 'login' },
+        { value: 'Contact Form', icon: 'contact_mail', route: 'contact' },
+        { value: 'Subscription Form', icon: 'subscriptions', route: 'subscription' },
+        { value: 'Task Form', icon: 'check', route: 'task' },
+        { value: 'Comment Form', icon: 'comment', route: 'comment' },
+        { value: 'Address Form', icon: 'location_city', route: 'address' },
       ]
     },
     toolbar: {
       list: []
     }
   };
-
-  constructor() { }
-
   ngOnInit(): void {
   }
 

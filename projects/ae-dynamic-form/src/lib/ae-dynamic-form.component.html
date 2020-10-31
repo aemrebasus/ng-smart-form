@@ -55,7 +55,8 @@
                         {{option.label}}
                     </mat-option>
                 </mat-select>
-                <mat-select [formControlName]="formInput.name" *ngIf="!isMultipleSelect(formInput.type)">
+                <mat-select [formControlName]="formInput.name" *ngIf="!isMultipleSelect(formInput.type)"
+                    (openedChange)="selectedValueChange(formInput.name)">
                     <mat-option [value]="option.value" *ngFor="let option of formInput.options">
                         <mat-icon matPrefix color="primary">{{option.icon}}</mat-icon>
                         {{option.label}}
@@ -117,4 +118,5 @@
         <button mat-raised-button (click)="submit()" [color]="input.submitButton.color"
             [disabled]="!isFormSubmitable()">{{input.submitButton.value || 'Submit'}}</button>
     </div>
+
 </form>

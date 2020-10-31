@@ -15,8 +15,8 @@ const DATE_FIELD: InputType[] = ['date', 'datetime-local', 'week', 'time'];
   styleUrls: ['./ae-dynamic-form.component.scss']
 })
 export class AeDynamicFormComponent implements OnInit {
-  protected formGroup: FormGroup;
 
+  protected formGroup: FormGroup;
   public isSubmitted$ = false;
   public get isSubmitted(): boolean { return this.isSubmitted$; }
   public set isSubmitted(value: boolean) { this.isSubmitted$ = value; }
@@ -25,54 +25,26 @@ export class AeDynamicFormComponent implements OnInit {
 
   @Input() input: AeDynamicForm = new AeFormBuilder()
     .title('Form Title')
+    .newControl('firstName').placeholder('Type First Name').icon('360')
+    .label('First Name').required().maxLength(10).minLength(3).buildFormControl()
 
-    .newControl('firstName')
-    .placeholder('Type First Name')
-    .icon('360')
-    .label('First Name')
-    .required()
-    .maxLength(10)
-    .minLength(3)
-    .buildFormControl()
+    .newControl('lastName').placeholder('Type Last Name')
+    .icon('perm_camera_mic').required().label('Last Name').buildFormControl()
 
-    .newControl('lastName')
-    .placeholder('Type Last Name')
-    .icon('perm_camera_mic')
-    .required()
-    .label('Last Name')
-    .buildFormControl()
-
-    .newControl('dbirth')
-    .type('date')
-    .startDate(Date.now())
-    .required()
-    .maxDate(Date.now())
-    .buildFormControl()
+    .newControl('dbirth').type('date').startDate(Date.now()).required().maxDate(Date.now()).buildFormControl()
 
     .newControl('Select Option').type('select')
-    .options([{ label: 'Option 1', value: 'Value 1', },
-    { label: 'Option 2', value: 'Value 2', },
-    { label: 'Option 3', value: 'Value 3', }
-    ]).buildFormControl()
-
-
-    .newControl('range')
-    .type('range')
-    .label('Range Label')
-    .range({ min: 0, max: 100 })
+    .options([{ label: 'Option 1', value: 'Value 1', }, { label: 'Option 2', value: 'Value 2', }, { label: 'Option 3', value: 'Value 3', }])
     .buildFormControl()
 
+    .newControl('range').type('range').label('Range Label')
+    .range({ min: 0, max: 100 }).buildFormControl()
 
-    .newControl('gender')
-    .type('radio')
-    .options([
-      { label: 'male', value: 'male' },
-      { label: 'female', value: 'female' },
-    ])
-    .buildFormControl()
-
+    .newControl('gender').type('radio')
+    .options([{ label: 'male', value: 'male' }, { label: 'female', value: 'female' }]).buildFormControl()
 
     .newControl('Fruit').label('fruit').type('checkbox').buildFormControl()
+
     .newControl('Banana').label('Banana').type('checkbox').buildFormControl()
 
 
@@ -104,35 +76,31 @@ export class AeDynamicFormComponent implements OnInit {
     return this.getFormControlByName(controlName).errors;
   }
 
-
   //  Form Validation Check
-
   public errorMessage(controlName: string): string[] {
     const errors = this.getErrorsByControlName(controlName);
-    if (errors) {
-      return Object.values(errors);
-    } else {
-      return null;
-    }
+    return errors ? Object.values(errors) : null;
   }
-  public isFormSubmitable(): boolean {
-    return this.isFormFieldsValid()
-      && this.isFormValid()
-      && this.isFormTouched()
-      && this.isFormDirty();
-  }
-  public isFormFieldsValid(): boolean {
-    return Object.values(this.formGroup.controls).map(c => c.valid && c.touched && c.dirty).reduce((f, s) => f && s);
-  }
+  public isFormSubmitable():
+    boolean { return this.isFormFieldsValid() && this.isFormValid() && this.isFormTouched() && this.isFormDirty(); }
+  public isFormFieldsValid():
+    boolean { return Object.values(this.formGroup.controls).map(c => c.valid && c.touched && c.dirty).reduce((f, s) => f && s); }
   public isFormValid(): boolean { return this.formGroup.valid; }
   public isFormInvalid(): boolean { return this.formGroup.invalid; }
   public isFormTouched(): boolean { return this.formGroup.touched; }
   public isFormDirty(): boolean { return this.formGroup.dirty; }
 
+
+  public selectedValueChange(inputName: string): void {
+    this.input.formInputs.forEach(e => {
+      if (e.dynamicOptions && e.dynamicOptions.inputName === inputName) {
+        e.options = e.dynamicOptions.handler(this.getInputValueByName(inputName));
+      }
+    });
+  }
   // Submit Reset Methods
 
   public submit(): void {
-    console.log(this.formGroup.value);
     if (this.isFormSubmitable()) {
       if (this.input.submitButton.action) {
         this.input.submitButton.action(this.formGroup.value);
@@ -140,10 +108,13 @@ export class AeDynamicFormComponent implements OnInit {
       this.submitted.emit(this.formGroup.value);
       this.isSubmitted = true;
     } else {
-      console.log('Form is not ready yet');
+      alert('Form is not valid!');
     }
   }
   public reset(): void { this.formGroup.reset(); }
+
+  public getInputValueByName(name: string): any { return this.getFormControlByName(name).value; }
+
 
 
   // Is Input type === ?
