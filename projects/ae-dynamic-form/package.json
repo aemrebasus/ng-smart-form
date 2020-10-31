@@ -1,6 +1,19 @@
 {
   "name": "ae-dynamic-form",
-  "version": "1.1.0",
+  "version": "1.1.1",
+  "keywords": [
+    "angular reactive form",
+    "dynamic forms",
+    "dynamic select options",
+    "from builder",
+    "form generator",
+    "fast from builder",
+    "quick form builder"
+  ],
+  "repository": {
+    "url": "https://github.com/aemrebasus/ng-smart-form",
+    "type": "github"
+  },
   "peerDependencies": {
     "@angular/common": "10.1.6",
     "@angular/core": "10.1.6",
