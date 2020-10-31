@@ -1,6 +1,6 @@
 {
   "name": "ae-dynamic-form",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "keywords": [
     "angular reactive form",
     "dynamic forms",
@@ -14,7 +14,7 @@
     "url": "https://github.com/aemrebasus/ng-smart-form",
     "type": "github"
   },
-  "homepage": "https://aemrebasus.github.io/ng-smart-form/",
+  "homepage": "https://aemrebasus.github.io/ng-smart-form",
   "peerDependencies": {
     "@angular/common": "10.1.6",
     "@angular/core": "10.1.6",
