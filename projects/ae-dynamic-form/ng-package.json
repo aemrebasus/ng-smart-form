@@ -8,7 +8,7 @@
     "tslib",
     "ng-icon-type",
     "address-type",
-    "form-input-type",
-    "validator"
+    "form-input-type", 
+    "country-state-city"
   ]
 }
