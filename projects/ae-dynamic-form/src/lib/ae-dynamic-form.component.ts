@@ -16,7 +16,7 @@ const DATE_FIELD: InputType[] = ['date', 'datetime-local', 'week', 'time'];
 })
 export class AeDynamicFormComponent implements OnInit {
 
-  protected formGroup: FormGroup;
+  public formGroup: FormGroup;
   public isSubmitted$ = false;
   public get isSubmitted(): boolean { return this.isSubmitted$; }
   public set isSubmitted(value: boolean) { this.isSubmitted$ = value; }
