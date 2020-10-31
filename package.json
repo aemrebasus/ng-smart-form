@@ -7,7 +7,7 @@
     "start": "ng serve",
     "build": "ng build --prod",
     "build:lib": "ng build --prod ae-dynamic-form",
-    "build:site": "ng build --prod ng-smart-form --base-href=./ng-smart-form",
+    "build:site": "ng build --prod ng-smart-form",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
