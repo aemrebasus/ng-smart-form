@@ -9,9 +9,7 @@ import { Router } from '@angular/router';
 export class NavigationComponent implements OnInit {
   @Input() baseRoute = '';
   @Input() logo;
-  @Input() buttons = [
-    { value: 'Documentation', link: 'doc' }
-  ];
+  @Input() buttons;
   constructor(public router: Router) { }
 
   ngOnInit(): void {
