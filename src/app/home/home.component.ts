@@ -13,8 +13,6 @@ export class HomeComponent implements OnInit {
 
   buttons = [
     { value: 'Documentation', link: 'doc' },
-    { value: 'about', link: 'about' },
-    { value: 'contact', link: 'contact' }
   ];
 
   constructor(public router: Router) {
@@ -24,6 +22,6 @@ export class HomeComponent implements OnInit {
 
   }
 
-  
+
 
 }

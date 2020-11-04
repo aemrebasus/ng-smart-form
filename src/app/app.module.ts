@@ -22,7 +22,8 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
-
+import {ClipboardModule} from '@angular/cdk/clipboard';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,6 +43,8 @@ import { MatListModule } from '@angular/material/list';
     MatButtonModule,
     MatInputModule,
     MatTabsModule,
+    ClipboardModule,
+    MatSnackBarModule,
     BrowserAnimationsModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     LayoutModule,

@@ -10,9 +10,7 @@ export class NavigationComponent implements OnInit {
   @Input() baseRoute = '';
   @Input() logo;
   @Input() buttons = [
-    { value: 'Documentation', link: 'doc' },
-    { value: 'about', link: 'about' },
-    { value: 'contact', link: 'contact' }
+    { value: 'Documentation', link: 'doc' }
   ];
   constructor(public router: Router) { }
 

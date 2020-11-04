@@ -7,15 +7,15 @@
                 <ae-dynamic-form [input]="form"></ae-dynamic-form>
             </div>
         </mat-tab>
-        <mat-tab label="Html">
-            <div class="code">
+        <mat-tab label="Html" >
+            <div class="code" (click)="popup('Copied the template.')">
                 <pre>
                     {{html}}
                 </pre>
             </div>
         </mat-tab>
         <mat-tab label="TypeScript">
-            <div class="code">
+            <div class="code" [cdkCopyToClipboard]="code" (click)="popup('Copied the code.')">
                 <pre>
                     {{code}}
                 </pre>

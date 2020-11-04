@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -9,9 +10,13 @@ import { ActivatedRoute } from '@angular/router';
 export class FormWrapperComponent implements OnInit {
   form;
   code = '';
-  html = '<ae-dynamic-form [input]="form"></ae-dynamic-form>';
+  html = `
+  <ae-dynamic-form [input]="form">
 
-  constructor(private router: ActivatedRoute) { }
+  </ae-dynamic-form>
+  `;
+
+  constructor(private router: ActivatedRoute, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.router.data.subscribe(data => {
@@ -20,6 +25,10 @@ export class FormWrapperComponent implements OnInit {
       console.log(data.form.title);
     });
 
+  }
+
+  popup(msg: string): void {
+    this.snackBar.open(msg, null, { duration: 2000 });
   }
 
 }
