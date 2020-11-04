@@ -14,7 +14,7 @@ import { HomeComponent } from './home/home.component';
 const routes: Routes = [
 
   {
-    path: 'doc', component: DocumentationComponent, children: [
+    path: '', component: DocumentationComponent, children: [
       { path: 'address', component: FormWrapperComponent, data: { form: ADDRESS_FORM, code: ADDRESS_FORM_CODE } },
       { path: 'contact', component: FormWrapperComponent, data: { form: CONTACT_FORM, code: CONTACT_FORM_CODE } },
       { path: 'login', component: FormWrapperComponent, data: { form: SIGNIN_FORM, code: SIGNIN_FORM_CODE } },
