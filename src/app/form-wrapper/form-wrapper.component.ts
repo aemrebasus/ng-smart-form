@@ -7,16 +7,19 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./form-wrapper.component.scss']
 })
 export class FormWrapperComponent implements OnInit {
-
-  formName: string;
   form;
+  code = '';
+  html = '<ae-dynamic-form [input]="form"></ae-dynamic-form>';
 
   constructor(private router: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.router.data.subscribe(data => {
       this.form = data.form;
+      this.code = data.code;
+      console.log(data.form.title);
     });
+
   }
 
 }

@@ -1,8 +1,25 @@
-<div class="card">
-    <div class="card-header">
-        <h2>{{formName}}</h2>
-    </div>
-    <div class="card-body">
-        <ae-dynamic-form [input]="form"></ae-dynamic-form>
-    </div>
+<div class="example-container">
+
+    <mat-tab-group>
+        <mat-tab label="Example">
+            <div class="code">
+                <h3 style="color: #303030;">{{form.formTitle}}</h3>
+                <ae-dynamic-form [input]="form"></ae-dynamic-form>
+            </div>
+        </mat-tab>
+        <mat-tab label="Html">
+            <div class="code">
+                <pre>
+                    {{html}}
+                </pre>
+            </div>
+        </mat-tab>
+        <mat-tab label="TypeScript">
+            <div class="code">
+                <pre>
+                    {{code}}
+                </pre>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
 </div>

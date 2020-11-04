@@ -24,8 +24,6 @@ export class HomeComponent implements OnInit {
 
   }
 
-  navigate(route: string): void {
-    this.router.navigate([route]);
-  }
+  
 
 }

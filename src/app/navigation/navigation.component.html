@@ -1,0 +1,7 @@
+<mat-toolbar>
+    <span class="logo" style="width: 200px; padding: 10px;" (click)="navigate('')" *ngIf="logo">{{logo}}</span>
+    <mat-toolbar-row>
+        <button mat-button *ngFor="let button of buttons" (click)="navigate(button.link)">
+            {{button.value | titlecase}}</button>
+    </mat-toolbar-row>
+</mat-toolbar>

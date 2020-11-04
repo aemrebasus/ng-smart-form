@@ -1,32 +1,8 @@
-.mat-toolbar {
-    background: linear-gradient(to right, rgba(30, 42, 146, 0.493), rgba(224, 50, 224, 0.472));
-    color: white;
-    font-family: "Courgette", cursive;
-    box-shadow: 0px 0px 10px gold;
-}
-.mat-toolbar-row{ 
-    justify-content: center;
-}
 
-button:hover::before {
-    width: 100%;
-    border-bottom: 3px solid white;
-}
-
-button::before {
-    content: "somecontent";
-    user-select: none;
-    color: transparent;
-    position: absolute;
-    width: 0%;
-    height: 100%;
+footer {
+    position: fixed;
     bottom: 0px;
-    left: 0px;
-    background-color: transparent;
-    border-bottom: 3px solid white;
-    transition: all ease-in-out 500ms;
-}
-
-.logo{ 
-    style="flex: 1 1 auto 1 ;"
+    width: 100vw;
+    height:50px;
+    background: linear-gradient(to right, rgba(30, 42, 146, 0.493), rgba(224, 50, 224, 0.472));
 }
