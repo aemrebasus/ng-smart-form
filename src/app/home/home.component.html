@@ -1,5 +1,9 @@
-<ae-side-nav [input]='navbar'>
-    <div class="container">
-        <router-outlet></router-outlet>
-    </div>
-</ae-side-nav>
+<mat-toolbar>
+    <mat-toolbar-row>
+        <span class="logo">NG Dynamic Form</span>
+        <span style="width: 200px;"></span>
+        <button mat-button *ngFor="let button of buttons" (click)="navigate(button.link)">
+            {{button.value | titlecase}}</button>
+    </mat-toolbar-row>
+</mat-toolbar>
+<router-outlet></router-outlet>

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ADDRESS_FORM, CONTACT_FORM, SIGNIN_FORM, SUBSCRIPTION_FORM, COMMENT_FORM, TASK_FORM } from './builtin-forms';
+import { DocumentationComponent } from './documentation/documentation.component';
 import { FormWrapperComponent } from './form-wrapper/form-wrapper.component';
 import { HomeComponent } from './home/home.component';
 
@@ -15,6 +16,7 @@ const routes: Routes = [
       { path: 'task', component: FormWrapperComponent, data: { form: TASK_FORM } }
     ]
   },
+  { path: 'doc', component: DocumentationComponent }
 
 ];
 
