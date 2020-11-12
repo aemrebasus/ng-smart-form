@@ -22,7 +22,6 @@ export class FormWrapperComponent implements OnInit {
     this.router.data.subscribe(data => {
       this.form = data.form;
       this.code = data.code;
-      console.log(data.form.title);
     });
 
   }

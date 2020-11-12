@@ -1,7 +1,7 @@
 import { AeFormBuilder } from 'projects/ae-dynamic-form/src/public-api';
 
 export const CONTACT_FORM_CODE = `
-new AeFormBuilder().title('Contact Form')
+const form = new AeFormBuilder().title('Contact Form')
     .newControl('firstName')
     .type('text')
     .label('First Name')

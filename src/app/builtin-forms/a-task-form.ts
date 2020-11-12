@@ -1,7 +1,7 @@
 import { AeFormBuilder } from 'projects/ae-dynamic-form/src/public-api';
 
 export const TASK_FROM_CODE = `
-new AeFormBuilder().title('Task Form')
+const form = new AeFormBuilder().title('Task Form')
     .newControl('title')
     .type('text')
     .label('Title')

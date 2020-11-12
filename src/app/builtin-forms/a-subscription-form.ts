@@ -1,7 +1,7 @@
 import { AeFormBuilder } from 'projects/ae-dynamic-form/src/public-api';
 
 export const SUBSCRIPTION_FORM_CODE = `
-new AeFormBuilder().title('Contact Form')
+const form =  new AeFormBuilder().title('Contact Form')
     .newControl('firstName')
     .autocomplete('cc-name')
     .type('text')

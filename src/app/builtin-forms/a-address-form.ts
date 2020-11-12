@@ -2,7 +2,7 @@ import csc from 'country-state-city';
 import { AeFormBuilder } from 'projects/ae-dynamic-form/src/public-api';
 
 export const ADDRESS_FORM_CODE = `
-new AeFormBuilder().title('Address Form')
+const form = new AeFormBuilder().title('Address Form')
 
     .newControl('street')
     .icon('my_location')

@@ -15,7 +15,6 @@ export class NavigationComponent implements OnInit {
   ngOnInit(): void {
   }
   navigate(route: string): void {
-    console.log(route);
     this.router.navigate([this.baseRoute, route]);
   }
 }

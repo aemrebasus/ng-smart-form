@@ -1,7 +1,7 @@
 import { AeFormBuilder } from 'ae-dynamic-form';
 
 export const DATE_RANGE_FORM_CODE = `
-new AeFormBuilder().title('Select Date Range')
+const form =  new AeFormBuilder().title('Select Date Range')
     .newControl('start')
     .type('date')
     .dateType('range')

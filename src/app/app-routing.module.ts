@@ -15,12 +15,12 @@ const routes: Routes = [
 
   {
     path: '', component: DocumentationComponent, children: [
-      { path: 'address', component: FormWrapperComponent, data: { form: ADDRESS_FORM, code: ADDRESS_FORM_CODE } },
-      { path: 'contact', component: FormWrapperComponent, data: { form: CONTACT_FORM, code: CONTACT_FORM_CODE } },
-      { path: 'login', component: FormWrapperComponent, data: { form: SIGNIN_FORM, code: SIGNIN_FORM_CODE } },
-      { path: 'subscription', component: FormWrapperComponent, data: { form: SUBSCRIPTION_FORM, code: SUBSCRIPTION_FORM_CODE } },
-      { path: 'date', component: FormWrapperComponent, data: { form: DATE_RANGE_FORM, code: DATE_RANGE_FORM_CODE } },
-      { path: 'task', component: FormWrapperComponent, data: { form: TASK_FORM, code: TASK_FROM_CODE } }
+      { path: 'doc/address', component: FormWrapperComponent, data: { form: ADDRESS_FORM, code: ADDRESS_FORM_CODE } },
+      { path: 'doc/contact', component: FormWrapperComponent, data: { form: CONTACT_FORM, code: CONTACT_FORM_CODE } },
+      { path: 'doc/login', component: FormWrapperComponent, data: { form: SIGNIN_FORM, code: SIGNIN_FORM_CODE } },
+      { path: 'doc/subscription', component: FormWrapperComponent, data: { form: SUBSCRIPTION_FORM, code: SUBSCRIPTION_FORM_CODE } },
+      { path: 'doc/date', component: FormWrapperComponent, data: { form: DATE_RANGE_FORM, code: DATE_RANGE_FORM_CODE } },
+      { path: 'doc/task', component: FormWrapperComponent, data: { form: TASK_FORM, code: TASK_FROM_CODE } }
     ]
   },
 ];

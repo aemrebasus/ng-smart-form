@@ -1,6 +1,6 @@
 import { AeFormBuilder } from 'projects/ae-dynamic-form/src/public-api';
 export const SIGNIN_FORM_CODE = `
-new AeFormBuilder().title('Login Form')
+const form = new AeFormBuilder().title('Login Form')
     .newControl('username')
     .type('text')
     .label('Username')
