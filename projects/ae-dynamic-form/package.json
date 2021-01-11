@@ -1,7 +1,7 @@
 {
   "name": "ae-dynamic-form",
   "description": "Angular Form Builder.",
-  "version": "1.1.6",
+  "version": "1.1.8",
   "keywords": [
     "angular reactive form",
     "dynamic forms",

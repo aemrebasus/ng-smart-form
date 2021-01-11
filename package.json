@@ -1,6 +1,6 @@
 {
   "name": "ng-smart-form",
-  "version": "1.1.6",
+  "version": "1.1.8",
   "homepage": "https://aemrebasus.github.io/ng-smart-form/",
   "scripts": {
     "ng": "ng",
