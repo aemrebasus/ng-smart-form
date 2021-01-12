@@ -7,7 +7,23 @@
           [type]="formInput.type"
           matInput
           [formControlName]="formInput.name"
-          [placeholder]="formInput.placeholder"
+          [placeholder]="preparePlaceholder(formInput)"
+          [value]="formInput.state"
+          [autocomplete]="formInput.autocomplete"
+        />
+        <mat-icon matSuffix>{{ formInput.icon }}</mat-icon>
+        <mat-hint>{{ formInput.hint }} </mat-hint>
+      </mat-form-field>
+    </span>
+
+    <!-- confirmation field if any -->
+    <span *ngIf="formInput.confirmation">
+      <mat-form-field>
+        <input
+          [type]="formInput.type"
+          matInput
+          [formControlName]="formInput.name + CONFIRM_EXTENSION"
+          [placeholder]="formInput.placeholder + ' (again)'"
           [value]="formInput.state"
           [autocomplete]="formInput.autocomplete"
         />
@@ -50,7 +66,7 @@
               placeholder="Start date"
             />
             <input
-              formControlName="dateRangeHelper0"
+              [formControlName]="formInput.name + RANGE_EXTENSION"
               matEndDate
               placeholder="End date"
             />

@@ -1,5 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ValidatorFn,
+} from '@angular/forms';
+import { AeFormControl } from './ae-dynamic-form.class';
 import { InputType } from 'form-input-type';
 import {
   AeDynamicForm,
@@ -27,6 +33,9 @@ const DATE_FIELD: InputType[] = ['date', 'datetime-local', 'week', 'time'];
   styleUrls: ['./ae-dynamic-form.component.scss'],
 })
 export class AeDynamicFormComponent implements OnInit {
+  public readonly RANGE_EXTENSION = '-range';
+  public readonly CONFIRM_EXTENSION = '-confirm';
+
   public formGroup: FormGroup;
   public isSubmitted$ = false;
   public get isSubmitted(): boolean {
@@ -112,26 +121,54 @@ export class AeDynamicFormComponent implements OnInit {
   }
 
   private initFormGroup(): void {
-    const dateRangeHelper0 = new FormControl('');
     const object = {};
     for (const input of this.input.formInputs) {
-      if (input.dateType === 'range') {
-        // tslint:disable-next-line: no-string-literal
-        object['dateRangeHelper0'] = dateRangeHelper0;
-      }
       const newControl = new FormControl(input.state, input.validators);
 
-      // Adding an extra property to the FormControl to check the field is optional or not
-      // This property excludes the untouched and undirty optional fields from  the input validation process.
-      (newControl as any).optional = !!input.optional;
+      // Adding helper properties
+
+      // optional property to exclude a field from validation
+      (newControl as any).optional = input.optional ? true : false;
+
+      // confirmation property to detect fields that have confirmation
+      (newControl as any).confirmation = input.confirmation ? true : false;
+
+      // control name for convinience
+      (newControl as any).name = input.name;
+
+      // If the input type is range , then add another control automatically to store the end date.
+      if (input.dateType === 'range') {
+        const dateRangeEnd = new FormControl('');
+        // make sure the '-range' extention matches with the name in the template.
+        object[input.name + this.RANGE_EXTENSION] = dateRangeEnd;
+      }
+
+      // Adding confirmation field like password confirmation if any
+      if (input.confirmation) {
+        // make sure the '-confirm' extention matches with the name in the tempalte.
+        object[input.name + this.CONFIRM_EXTENSION] = new FormControl('');
+      }
 
       object[input.name] = newControl;
 
+      // Set default value of autocomplete off
       if (!input.autocomplete) {
         input.autocomplete = 'off';
       }
     }
+
+    // Initialize the FormGroup
     this.formGroup = new FormGroup(object);
+  }
+
+  /**
+   * @description Add (*) asteriks if the field is optional or (optional) at the end of the place holder.
+   */
+  public preparePlaceholder(formInput: AeFormControl): string {
+    if (formInput.optional) {
+      return formInput.placeholder + ' (optional)';
+    }
+    return '(*) ' + formInput.placeholder;
   }
 
   private getFormControlByName(controlName: string): AbstractControl {
@@ -158,13 +195,41 @@ export class AeDynamicFormComponent implements OnInit {
     );
   }
 
+  /**
+   * @description return true if the confirmation field value matches the actual field value
+   */
+  public isConfirmationFieldValid(name: string) {
+    const actualControl = this.getFormControlByName(name);
+    const confirmControl = this.getFormControlByName(
+      name + this.CONFIRM_EXTENSION
+    );
+    const actualValue = this.getInputValueByName(name);
+    const confirmValue = this.getInputValueByName(
+      name + this.CONFIRM_EXTENSION
+    );
+
+    if (actualValue !== confirmValue) {
+      return false;
+    }
+
+    return true;
+  }
+
+  /**
+   * @description check validation of all fields
+   */
   public isFormFieldsValid(): boolean {
     return Object.values(this.formGroup.controls)
       .map((c: any) => {
         if (c.optional) {
           return true;
         }
-        return c.valid && c.dirty; //&& c.touched
+
+        if (c.confirmation && c.dirty ) {
+          return this.isConfirmationFieldValid(c.name);
+        }
+
+        return c.valid && c.dirty && c.touched;
       })
       .reduce((f, s) => f && s);
   }

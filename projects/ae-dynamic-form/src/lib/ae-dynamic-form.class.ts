@@ -66,6 +66,7 @@ export interface AeFormControl {
   startDate?: Date;
   state?: string | number;
   optional?: boolean;
+  confirmation?: boolean;
   validators?: ValidatorFn[];
   autocomplete?: InputAutocompleteType;
   hint?: string;
@@ -306,6 +307,17 @@ export class AeFormBuilder {
   }
 
   /**
+   * @description add a confirmation control for the current control
+   */
+  public confirmation() {
+    this.newFormControlHolder = {
+      ...this.newFormControlHolder,
+      confirmation: true,
+    };
+    return this;
+  }
+
+  /**
    * @description add a custom validator for the input element.
    * @param validator$ ValidatorFn.
    */
@@ -321,7 +333,10 @@ export class AeFormBuilder {
    * @description set the input optional
    */
   public optional(): AeFormBuilder {
-    this.newFormControlHolder.optional = true;
+    this.newFormControlHolder = {
+      ...this.newFormControlHolder,
+      optional: true,
+    };
     return this;
   }
 
