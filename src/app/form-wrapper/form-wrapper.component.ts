@@ -11,7 +11,7 @@ export class FormWrapperComponent implements OnInit {
   form;
   code = '';
   html = `
-  <ae-dynamic-form [input]="form">
+  <ae-dynamic-form [input]="form" (submitted)="submit($event)">
 
   </ae-dynamic-form>
   `;
