@@ -38,6 +38,15 @@ export class AeDynamicFormComponent implements OnInit {
 
   @Output() submitted = new EventEmitter<{ [key: string]: string }>();
 
+  @Input() position:
+    | 'f-end'
+    | 'f-start'
+    | 'f-center'
+    | 'f-between'
+    | 'f-around' = 'f-end';
+
+  @Input() resetButton: boolean = true;
+
   @Input() input: AeDynamicForm = new AeFormBuilder()
     .title('Form Title')
     .newControl('firstName')
@@ -110,7 +119,14 @@ export class AeDynamicFormComponent implements OnInit {
         // tslint:disable-next-line: no-string-literal
         object['dateRangeHelper0'] = dateRangeHelper0;
       }
-      object[input.name] = new FormControl(input.state, input.validators);
+      const newControl = new FormControl(input.state, input.validators);
+
+      // Adding an extra property to the FormControl to check the field is optional or not
+      // This property excludes the untouched and undirty optional fields from  the input validation process.
+      (newControl as any).optional = !!input.optional;
+
+      object[input.name] = newControl;
+
       if (!input.autocomplete) {
         input.autocomplete = 'off';
       }
@@ -141,9 +157,15 @@ export class AeDynamicFormComponent implements OnInit {
       this.isFormDirty()
     );
   }
+
   public isFormFieldsValid(): boolean {
     return Object.values(this.formGroup.controls)
-      .map((c) => c.valid && c.dirty) //c.touched &&
+      .map((c: any) => {
+        if (c.optional) {
+          return true;
+        }
+        return c.valid && c.dirty; //&& c.touched
+      })
       .reduce((f, s) => f && s);
   }
   public isFormValid(): boolean {
@@ -168,10 +190,11 @@ export class AeDynamicFormComponent implements OnInit {
       }
     });
   }
-  // Submit Reset Methods
 
+  // Submit Reset Methods
   public submit(): void {
     if (this.isFormSubmitable()) {
+      console.log(this.formGroup.value);
       if (this.input.submitButton.action) {
         this.input.submitButton.action(this.formGroup.value);
       }

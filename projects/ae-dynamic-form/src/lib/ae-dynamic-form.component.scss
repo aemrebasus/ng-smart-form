@@ -1,21 +1,60 @@
 button:active,
 button:focus {
-    border: none;
+  border: none;
 }
 
 mat-form-field {
-    width: 100%;
+  width: 100%;
 }
 
 mat-slider {
-    width: 100%;
+  width: 100%;
 }
 
 .radio-group {
-    border: 1px solid rgba(47, 45, 50, 0.5);
-    border-radius: 10px;
-    display: block;
-    padding: 1px;
-    padding-top: 5px;
-    padding-left: 4px;
+  border: 1px solid rgba(47, 45, 50, 0.5);
+  border-radius: 10px;
+  display: block;
+  padding: 1px;
+  padding-top: 5px;
+  padding-left: 4px;
+}
+
+.d-flex {
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.d-flex button {
+  margin-right: 5px;
+}
+.d-flex button:last-child {
+  margin-right: 0px;
+}
+
+.f-end {
+  @extend .d-flex;
+  justify-content: flex-end;
+}
+
+.f-start {
+  @extend .d-flex;
+  justify-content: flex-start;
+}
+
+.f-center {
+  @extend .d-flex;
+  justify-content: center;
+}
+
+.f-between {
+  @extend .d-flex;
+  justify-content: space-between;
+}
+
+.f-around {
+  @extend .d-flex;
+  justify-content: space-around;
 }

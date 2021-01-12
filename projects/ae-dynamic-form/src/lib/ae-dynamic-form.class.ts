@@ -65,6 +65,7 @@ export interface AeFormControl {
   dateRange?: boolean;
   startDate?: Date;
   state?: string | number;
+  optional?: boolean;
   validators?: ValidatorFn[];
   autocomplete?: InputAutocompleteType;
   hint?: string;
@@ -313,6 +314,14 @@ export class AeFormBuilder {
       ...this.newFormControlHolder.validators,
       validator$,
     ];
+    return this;
+  }
+
+  /**
+   * @description set the input optional
+   */
+  public optional(): AeFormBuilder {
+    this.newFormControlHolder.optional = true;
     return this;
   }
 

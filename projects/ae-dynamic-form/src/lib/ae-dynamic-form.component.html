@@ -1,122 +1,179 @@
 <form [formGroup]="formGroup">
-    <div *ngFor='let formInput of input.formInputs'>
+  <div *ngFor="let formInput of input.formInputs">
+    <!-- text:color:number:email:password:url input -->
+    <span *ngIf="isTextField(formInput.type)">
+      <mat-form-field>
+        <input
+          [type]="formInput.type"
+          matInput
+          [formControlName]="formInput.name"
+          [placeholder]="formInput.placeholder"
+          [value]="formInput.state"
+          [autocomplete]="formInput.autocomplete"
+        />
+        <mat-icon matSuffix>{{ formInput.icon }}</mat-icon>
+        <mat-hint>{{ formInput.hint }} </mat-hint>
+      </mat-form-field>
+    </span>
 
-        <!-- text:color:number:email:password:url input -->
-        <span *ngIf="isTextField(formInput.type)">
-            <mat-form-field>
-                <input [type]="formInput.type" matInput [formControlName]="formInput.name"
-                    [placeholder]="formInput.placeholder" [value]="formInput.state"
-                    [autocomplete]="formInput.autocomplete">
-                <mat-icon matSuffix>{{formInput.icon}}</mat-icon>
-                <mat-hint>{{formInput.hint}} </mat-hint>
-            </mat-form-field>
-        </span>
+    <!-- Date Field -->
+    <span *ngIf="isDateField(formInput.type)">
+      <!-- Basic Date -->
+      <span *ngIf="isBasicDateField(formInput.dateType)">
+        <mat-form-field>
+          <mat-label>Choose a date</mat-label>
+          <input
+            matInput
+            [formControlName]="formInput.name"
+            [matDatepicker]="picker"
+          />
+          <mat-datepicker-toggle matSuffix [for]="picker">
+            <mat-icon matDatepickerToggleIcon>{{
+              formInput.icon || "calendar_today"
+            }}</mat-icon>
+          </mat-datepicker-toggle>
+          <mat-datepicker
+            #picker
+            [startAt]="formInput.startDate"
+          ></mat-datepicker>
+        </mat-form-field>
+      </span>
 
-        <!-- Date Field -->
-        <span *ngIf="isDateField(formInput.type)">
+      <!-- Range Date -->
+      <span *ngIf="isRangeDateField(formInput.dateType)">
+        <mat-form-field>
+          <mat-label>Enter a date range</mat-label>
+          <mat-date-range-input [rangePicker]="picker">
+            <input
+              [formControlName]="formInput.name"
+              matStartDate
+              placeholder="Start date"
+            />
+            <input
+              formControlName="dateRangeHelper0"
+              matEndDate
+              placeholder="End date"
+            />
+          </mat-date-range-input>
+          <mat-datepicker-toggle matSuffix [for]="picker">
+            <mat-icon matDatepickerToggleIcon>{{
+              formInput.icon || "calendar_today"
+            }}</mat-icon>
+          </mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field>
+      </span>
+    </span>
 
-            <!-- Basic Date -->
-            <span *ngIf="isBasicDateField(formInput.dateType)">
-                <mat-form-field>
-                    <mat-label>Choose a date</mat-label>
-                    <input matInput [formControlName]="formInput.name" [matDatepicker]="picker">
-                    <mat-datepicker-toggle matSuffix [for]="picker">
-                        <mat-icon matDatepickerToggleIcon>{{formInput.icon || 'calendar_today'}}</mat-icon>
-                    </mat-datepicker-toggle>
-                    <mat-datepicker #picker [startAt]="formInput.startDate"></mat-datepicker>
-                </mat-form-field>
-            </span>
+    <!-- Select input  -->
+    <span *ngIf="isSelectField(formInput.type)">
+      <mat-form-field>
+        <mat-label>{{ formInput.label }}</mat-label>
+        <mat-select
+          [formControlName]="formInput.name"
+          *ngIf="isMultipleSelect(formInput.type)"
+          multiple
+        >
+          <mat-option
+            [value]="option.value"
+            *ngFor="let option of formInput.options"
+          >
+            <mat-icon matPrefix color="primary">{{ option.icon }}</mat-icon>
+            {{ option.label }}
+          </mat-option>
+        </mat-select>
+        <mat-select
+          [formControlName]="formInput.name"
+          *ngIf="!isMultipleSelect(formInput.type)"
+          (openedChange)="selectedValueChange(formInput.name)"
+        >
+          <mat-option
+            [value]="option.value"
+            *ngFor="let option of formInput.options"
+          >
+            <mat-icon matPrefix color="primary">{{ option.icon }}</mat-icon>
+            {{ option.label }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </span>
 
-            <!-- Range Date -->
-            <span *ngIf="isRangeDateField(formInput.dateType)">
-                <mat-form-field>
-                    <mat-label>Enter a date range</mat-label>
-                    <mat-date-range-input [rangePicker]="picker">
-                        <input [formControlName]="formInput.name" matStartDate placeholder="Start date">
-                        <input formControlName="dateRangeHelper0" matEndDate placeholder="End date">
-                    </mat-date-range-input>
-                    <mat-datepicker-toggle matSuffix [for]="picker">
-                        <mat-icon matDatepickerToggleIcon>{{formInput.icon || 'calendar_today'}}</mat-icon>
-                    </mat-datepicker-toggle>
-                    <mat-date-range-picker #picker></mat-date-range-picker>
-                </mat-form-field>
-            </span>
+    <!-- Textarea  -->
+    <span *ngIf="isTextArea(formInput.type)">
+      <mat-form-field appearance="legacy">
+        <mat-label>
+          <mat-icon matPrefix>{{ formInput.icon }}</mat-icon>
+          {{ formInput.label }}
+        </mat-label>
+        <textarea
+          matInput
+          [placeholder]="formInput.placeholder"
+          [formControlName]="formInput.name"
+        ></textarea>
+      </mat-form-field>
+    </span>
 
-        </span>
+    <!-- Checkbox -->
+    <span *ngIf="isCheckbox(formInput.type)">
+      <mat-checkbox [formControlName]="formInput.name">
+        {{ formInput.label }}
+      </mat-checkbox>
+    </span>
 
+    <!-- Range input -->
+    <span *ngIf="isRange(formInput.type)">
+      <mat-label>{{ formInput.label }}</mat-label>
+      <mat-slider
+        #slider
+        thumbLabel
+        [min]="formInput.range.min"
+        [max]="formInput.range.max"
+        [formControlName]="formInput.name"
+      >
+      </mat-slider>
+    </span>
 
-        <!-- Select input  -->
-        <span *ngIf="isSelectField(formInput.type)">
-            <mat-form-field>
-                <mat-label>{{formInput.label}}</mat-label>
-                <mat-select [formControlName]="formInput.name" *ngIf="isMultipleSelect(formInput.type)" multiple>
-                    <mat-option [value]="option.value" *ngFor="let option of formInput.options">
-                        <mat-icon matPrefix color="primary">{{option.icon}}</mat-icon>
-                        {{option.label}}
-                    </mat-option>
-                </mat-select>
-                <mat-select [formControlName]="formInput.name" *ngIf="!isMultipleSelect(formInput.type)"
-                    (openedChange)="selectedValueChange(formInput.name)">
-                    <mat-option [value]="option.value" *ngFor="let option of formInput.options">
-                        <mat-icon matPrefix color="primary">{{option.icon}}</mat-icon>
-                        {{option.label}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-        </span>
+    <span *ngIf="isRadio(formInput.type)" class="radio-group">
+      <mat-radio-group
+        #radioGroup
+        [formControlName]="formInput.name"
+        aria-label="Select an option"
+      >
+        <mat-radio-button
+          [value]="option.value"
+          *ngFor="let option of formInput.options"
+          style="display: block"
+          >{{ option.label }}
+        </mat-radio-button>
+      </mat-radio-group>
+      <input
+        [formControlName]="formInput.name"
+        [(ngModel)]="radioGroup.value"
+        disabled
+        style="position: fixed; visibility: hidden"
+      />
+    </span>
 
+    <!-- Field Validation Errors -->
+    <mat-error style="display: inline; position: relative">
+      <li *ngFor="let err of errorMessage(formInput.name)">
+        {{ err }}
+      </li>
+    </mat-error>
+  </div>
 
-        <!-- Textarea  -->
-        <span *ngIf="isTextArea(formInput.type)">
-            <mat-form-field appearance="legacy">
-                <mat-label>
-                    <mat-icon matPrefix>{{formInput.icon}}</mat-icon>
-                    {{formInput.label}}
-                </mat-label>
-                <textarea matInput [placeholder]="formInput.placeholder" [formControlName]="formInput.name"></textarea>
-            </mat-form-field>
-        </span>
+  <div *ngIf="input.submitButton" [class]="position">
+    <button mat-raised-button (click)="reset()" *ngIf="resetButton">
+      Reset
+    </button>
 
-
-        <!-- Checkbox -->
-        <span *ngIf='isCheckbox(formInput.type)'>
-            <mat-checkbox [formControlName]="formInput.name"> {{formInput.label}} </mat-checkbox>
-        </span>
-
-
-        <!-- Range input -->
-        <span *ngIf="isRange(formInput.type)">
-            <mat-label>{{formInput.label}}</mat-label>
-            <mat-slider #slider thumbLabel [min]="formInput.range.min" [max]="formInput.range.max"
-                [formControlName]="formInput.name">
-            </mat-slider>
-        </span>
-
-
-        <span *ngIf="isRadio(formInput.type)" class="radio-group">
-            <mat-radio-group #radioGroup [formControlName]="formInput.name" aria-label="Select an option">
-                <mat-radio-button [value]="option.value" *ngFor="let option of formInput.options"
-                    style="display: block;">{{option.label}}
-                </mat-radio-button>
-            </mat-radio-group>
-            <input [formControlName]="formInput.name" [(ngModel)]="radioGroup.value" disabled
-                style="position:fixed; visibility: hidden;" />
-        </span>
-
-
-
-        <!-- Field Validation Errors -->
-        <mat-error style="display: inline; position: relative;">
-            <li *ngFor="let err of errorMessage(formInput.name)">
-                {{err}}
-            </li>
-        </mat-error>
-
-    </div>
-
-    <div *ngIf="input.submitButton">
-        <button mat-raised-button (click)="submit()" [color]="input.submitButton.color"
-            [disabled]="!isFormSubmitable()">{{input.submitButton.value || 'Submit'}}</button>
-    </div>
-
+    <button
+      mat-raised-button
+      (click)="submit()"
+      [color]="input.submitButton.color"
+      [disabled]="!isFormSubmitable()"
+    >
+      {{ input.submitButton.value || "Submit" }}
+    </button>
+  </div>
 </form>
