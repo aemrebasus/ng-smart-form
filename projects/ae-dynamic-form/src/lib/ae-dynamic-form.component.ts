@@ -111,6 +111,9 @@ export class AeDynamicFormComponent implements OnInit {
         object['dateRangeHelper0'] = dateRangeHelper0;
       }
       object[input.name] = new FormControl(input.state, input.validators);
+      if (!input.autocomplete) {
+        input.autocomplete = 'off';
+      }
     }
     this.formGroup = new FormGroup(object);
   }
@@ -140,7 +143,7 @@ export class AeDynamicFormComponent implements OnInit {
   }
   public isFormFieldsValid(): boolean {
     return Object.values(this.formGroup.controls)
-      .map((c) => c.valid &&  c.dirty)  //c.touched &&
+      .map((c) => c.valid && c.dirty) //c.touched &&
       .reduce((f, s) => f && s);
   }
   public isFormValid(): boolean {
