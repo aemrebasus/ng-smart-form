@@ -423,7 +423,7 @@ export class AeFormBuilder {
     this.addValidator((control) =>
       Validators.email(control)
         ? {
-            email: `${(control as any).name}'s value${
+            email: `${(control as any).name}'s value ${
               control.value
             } is not a valid email!`,
           }
