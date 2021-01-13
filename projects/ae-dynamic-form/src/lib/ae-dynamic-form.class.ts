@@ -1,5 +1,4 @@
 // tslint:disable: max-line-length
-
 import { FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { IconType } from 'ng-icon-type';
 import { InputType, InputAutocompleteType } from 'form-input-type';
@@ -76,6 +75,7 @@ export interface AeFormControl {
   dynamicOptions?: DynamicOptions;
   range?: { min: number; max: number };
   icon?: IconType;
+  iconColor?: 'accent' | 'warn' | 'primary';
   disabled?: boolean;
   classes?: string[];
   styles?: string;
@@ -301,8 +301,15 @@ export class AeFormBuilder {
    * @description set an icon for the input.
    * @param icon Angular material icon. It will be placed right side of the input.
    */
-  public icon(icon: IconType): AeFormBuilder {
-    this.newFormControlHolder = { ...this.newFormControlHolder, icon };
+  public icon(
+    icon: IconType,
+    iconColor: 'accent' | 'warn' | 'primary' = 'primary'
+  ): AeFormBuilder {
+    this.newFormControlHolder = {
+      ...this.newFormControlHolder,
+      icon,
+      iconColor,
+    };
     return this;
   }
 

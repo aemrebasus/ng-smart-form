@@ -11,7 +11,9 @@
           [value]="formInput.state"
           [autocomplete]="formInput.autocomplete"
         />
-        <mat-icon matSuffix>{{ formInput.icon }}</mat-icon>
+        <mat-icon matSuffix [color]="formInput.iconColor">{{
+          formInput.icon
+        }}</mat-icon>
         <mat-hint>{{ formInput.hint }} </mat-hint>
       </mat-form-field>
     </span>
@@ -27,7 +29,9 @@
           [value]="formInput.state"
           [autocomplete]="formInput.autocomplete"
         />
-        <mat-icon matSuffix>{{ formInput.icon }}</mat-icon>
+        <mat-icon matSuffix [color]="formInput.iconColor">{{
+          formInput.icon
+        }}</mat-icon>
         <mat-hint>{{ formInput.hint }} </mat-hint>
       </mat-form-field>
     </span>
@@ -44,7 +48,7 @@
             [matDatepicker]="picker"
           />
           <mat-datepicker-toggle matSuffix [for]="picker">
-            <mat-icon matDatepickerToggleIcon>{{
+            <mat-icon matDatepickerToggleIcon [color]="formInput.iconColor">{{
               formInput.icon || "calendar_today"
             }}</mat-icon>
           </mat-datepicker-toggle>
@@ -72,7 +76,7 @@
             />
           </mat-date-range-input>
           <mat-datepicker-toggle matSuffix [for]="picker">
-            <mat-icon matDatepickerToggleIcon>{{
+            <mat-icon matDatepickerToggleIcon [color]="formInput.iconColor">{{
               formInput.icon || "calendar_today"
             }}</mat-icon>
           </mat-datepicker-toggle>
@@ -94,7 +98,9 @@
             [value]="option.value"
             *ngFor="let option of formInput.options"
           >
-            <mat-icon matPrefix color="primary">{{ option.icon }}</mat-icon>
+            <mat-icon matPrefix [color]="formInput.iconColor">{{
+              option.icon
+            }}</mat-icon>
             {{ option.label }}
           </mat-option>
         </mat-select>
@@ -107,7 +113,9 @@
             [value]="option.value"
             *ngFor="let option of formInput.options"
           >
-            <mat-icon matPrefix color="primary">{{ option.icon }}</mat-icon>
+            <mat-icon matPrefix [color]="formInput.iconColor">{{
+              option.icon
+            }}</mat-icon>
             {{ option.label }}
           </mat-option>
         </mat-select>
@@ -118,7 +126,9 @@
     <span *ngIf="isTextArea(formInput.type)">
       <mat-form-field appearance="legacy">
         <mat-label>
-          <mat-icon matPrefix>{{ formInput.icon }}</mat-icon>
+          <mat-icon matPrefix [color]="formInput.iconColor">{{
+            formInput.icon
+          }}</mat-icon>
           {{ formInput.label }}
         </mat-label>
         <textarea
