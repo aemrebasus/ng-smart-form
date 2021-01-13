@@ -45,6 +45,8 @@ export class AeDynamicFormComponent implements OnInit {
     this.isSubmitted$ = value;
   }
 
+  public matchMap: Map<string, any[]> = new Map();
+
   @Output() submitted = new EventEmitter<{ [key: string]: string }>();
 
   @Input() position:
@@ -178,14 +180,35 @@ export class AeDynamicFormComponent implements OnInit {
   private getErrorsByControlName(
     controlName: string
   ): { [key: string]: string | null } {
-    return this.getFormControlByName(controlName).errors;
+    return this.getFormControlByName(controlName)?.errors;
   }
 
-  //  Form Validation Check
+  /**
+   * @description get the error messages from the control
+   */
   public errorMessage(controlName: string): string[] {
-    const errors = this.getErrorsByControlName(controlName);
-    return errors ? Object.values(errors) : null;
+    const control = this.getFormControlByName(controlName);
+
+    const validateField = () => {
+      const errors = this.getErrorsByControlName(controlName);
+      const confirmErrors = this.getErrorsByControlName(
+        controlName + this.CONFIRM_EXTENSION
+      );
+      return errors || confirmErrors
+        ? Object.values({ ...errors, ...confirmErrors })
+        : null;
+    };
+
+    if (control.touched || controlName.endsWith(this.CONFIRM_EXTENSION)) {
+      return validateField();
+    }
+
+    return null;
   }
+
+  /**
+   * @description check the form is submittable or not.
+   */
   public isFormSubmitable(): boolean {
     return (
       this.isFormFieldsValid() &&
@@ -198,21 +221,22 @@ export class AeDynamicFormComponent implements OnInit {
   /**
    * @description return true if the confirmation field value matches the actual field value
    */
-  public isConfirmationFieldValid(name: string) {
-    const actualControl = this.getFormControlByName(name);
+  public activateConfirmationValidation(name: string) {
+    const actualValue = this.getInputValueByName(name);
     const confirmControl = this.getFormControlByName(
       name + this.CONFIRM_EXTENSION
     );
-    const actualValue = this.getInputValueByName(name);
-    const confirmValue = this.getInputValueByName(
-      name + this.CONFIRM_EXTENSION
-    );
-
-    if (actualValue !== confirmValue) {
-      return false;
-    }
-
-    return true;
+    confirmControl.setValidators([
+      (c) => {
+        if (c.value === actualValue) {
+          return null;
+        } else {
+          return {
+            match: name + 's do not match!',
+          };
+        }
+      },
+    ]);
   }
 
   /**
@@ -221,15 +245,19 @@ export class AeDynamicFormComponent implements OnInit {
   public isFormFieldsValid(): boolean {
     return Object.values(this.formGroup.controls)
       .map((c: any) => {
-        if (c.optional) {
-          return true;
-        }
+        if (c.dirty) {
+          //&& c.touched
+          if (c.optional) {
+            return true;
+          }
 
-        if (c.confirmation && c.dirty ) {
-          return this.isConfirmationFieldValid(c.name);
-        }
+          if (c.confirmation) {
+            this.activateConfirmationValidation(c.name);
+          }
 
-        return c.valid && c.dirty && c.touched;
+          return c.valid;
+        }
+        return false;
       })
       .reduce((f, s) => f && s);
   }
