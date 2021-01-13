@@ -345,7 +345,9 @@ export class AeFormBuilder {
    */
   public required(): AeFormBuilder {
     this.addValidator((control) =>
-      control.value === '' ? { required: 'Field is required!' } : null
+      control.value === ''
+        ? { required: `${(control as any).name} is required!` }
+        : null
     );
     return this;
   }
@@ -356,7 +358,11 @@ export class AeFormBuilder {
   public minLength(minLength: number): AeFormBuilder {
     this.addValidator((control) =>
       control.value?.length < minLength
-        ? { minLength: `Field must contain at least ${minLength} chracter!` }
+        ? {
+            minLength: `${
+              (control as any).name
+            } must contain at least ${minLength} chracter!`,
+          }
         : null
     );
     return this;
@@ -368,7 +374,11 @@ export class AeFormBuilder {
   public maxLength(maxLength: number): AeFormBuilder {
     this.addValidator((control) =>
       control.value?.length > maxLength
-        ? { maxLength: `Field must contain at most ${maxLength} chracter!` }
+        ? {
+            maxLength: `${
+              (control as any).name
+            } must contain at most ${maxLength} chracter!`,
+          }
         : null
     );
     return this;
@@ -381,7 +391,7 @@ export class AeFormBuilder {
     this.addValidator((control) =>
       Date.parse(control.value) > max
         ? {
-            maxDate: `Field must be before the ${new Date(
+            maxDate: `${(control as any).name} must be before the ${new Date(
               max
             ).toLocaleDateString()}`,
           }
@@ -397,7 +407,7 @@ export class AeFormBuilder {
     this.addValidator((control) =>
       Date.parse(control.value) < min
         ? {
-            minDate: `Field must be after the ${new Date(
+            minDate: `${(control as any).name} must be after the ${new Date(
               min
             ).toLocaleDateString()}`,
           }
@@ -412,7 +422,11 @@ export class AeFormBuilder {
   public email(): AeFormBuilder {
     this.addValidator((control) =>
       Validators.email(control)
-        ? { email: `${control.value} is not a valid email!` }
+        ? {
+            email: `${(control as any).name}'s value${
+              control.value
+            } is not a valid email!`,
+          }
         : null
     );
     return this;
