@@ -245,11 +245,11 @@ export class AeDynamicFormComponent implements OnInit {
   public isFormFieldsValid(): boolean {
     return Object.values(this.formGroup.controls)
       .map((c: any) => {
+        if (c.optional) {
+          return true;
+        }
         if (c.dirty) {
           //&& c.touched
-          if (c.optional) {
-            return true;
-          }
 
           if (c.confirmation) {
             this.activateConfirmationValidation(c.name);
